@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* --- Surfaces & canvas --- */
-  --canvas:        #eef1f0; /* App background, cool and calm, never pure white */
+  /* --- Surfaces & canvas (subtly slate-blue tinted) --- */
+  --canvas:        #edf1f5; /* App background, cool, calm slate-grey, never pure white */
   --surface:       #ffffff; /* Cards and panels */
-  --surface-2:     #f8faf9; /* Inset and secondary surfaces */
+  --surface-2:     #f5f8fa; /* Inset and secondary surfaces */
 
-  /* --- Ink / text (deepened for more contrast / modern punch) --- */
-  --ink:           #0f1b17; /* Primary text, a deep pine near-black */
-  --ink-soft:      #2f3e39; /* Secondary headings and emphasis */
-  --muted:         #5d6e6a; /* Captions, labels, secondary text */
+  /* --- Ink / text (premium slate-navy for high readability) --- */
+  --ink:           #0f172a; /* Primary text (slate-900) */
+  --ink-soft:      #334155; /* Secondary text (slate-700) */
+  --muted:         #64748b; /* Captions, labels (slate-500) */
 
   /* --- Lines --- */
-  --line:          #e2e7e4; /* Borders and hairlines */
+  --line:          #e1e6eb; /* Soft slate-blue borders */
 
   /* --- Accent: petrol teal (recovery + primary action) --- */
   --accent:        #0c7d72; /* Petrol teal, enriched a touch for more conviction */
@@ -39,27 +39,58 @@
   --lilac:         #ece9f6;
   --lilac-ink:     #5b4b8a;
 
+  /* --- Elevation (theme-aware) --- */
+  --shadow-card:   0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
+  --shadow-lift:   0 4px 16px rgba(15, 23, 42, 0.08);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 html.dark, .theme-dark {
-  /* Premium Dark Pine / Charcoal palette */
-  --canvas:        #0a1714; /* ink-deep */
-  --surface:       #0d1d19; /* surface-dark */
-  --surface-2:     #112923; /* secondary dark pine surface */
-  --ink:           #f3f7f5; /* text-on-dark */
-  --ink-soft:      #9fb3ad; /* text-on-dark-muted */
-  --muted:         #718a82;
-  --line:          rgba(255,255,255,0.12); /* line-dark */
-  --accent:        #20c4b0; /* accent-bright */
-  --accent-ink:    #5eead4;
-  --accent-soft:   rgba(32,196,176,0.15);
-  --band:          rgba(32,196,176,0.20);
-  --signal:        #ff6a3c; /* signal-bright */
-  --signal-soft:   #381e13;
-  --signal-ink:    #ff8a65;
+  /* Premium Obsidian Slate-Navy palette — deep, rich, high-contrast, layered for depth */
+  --canvas:        #080c14; /* Deepest midnight navy-black canvas */
+  --surface:       #0f172a; /* Raised card surface (slate-900) */
+  --surface-2:     #1e293b; /* Inset / secondary surface (slate-800) */
+
+  /* Ink / text */
+  --ink:           #f8fafc; /* Primary text (slate-50) */
+  --ink-soft:      #cbd5e1; /* Secondary text (slate-300) */
+  --muted:         #64748b; /* Muted captions/labels (slate-500) */
+
+  /* Subtle color-themed borders — completely avoids flat white borders */
+  --line:          rgba(56, 189, 248, 0.08); /* Translucent sky-blue/teal hairline glow */
+
+  /* Accent: petrol teal glow */
+  --accent:        #2dd4bf; /* Vibrant teal-400 */
+  --accent-ink:    #99f6e4; /* Light teal-200 */
+  --accent-soft:   rgba(45, 212, 191, 0.1); /* Translucent teal tint */
+  --accent-bright: #38bdf8; /* Sky blue glow */
+  --band:          rgba(45, 212, 191, 0.15); /* Expected recovery band */
+
+  /* Signal: flame orange glow */
+  --signal:        #fb923c; /* Vibrant orange-400 */
+  --signal-soft:   rgba(249, 115, 22, 0.1); /* Translucent orange tint */
+  --signal-ink:    #ffedd5; /* Warm cream */
+  --signal-bright: #ff7c5c;
+
+  /* Patient app tints overridden for dark mode — translucent glassmorphic backdrops */
+  --mint:          rgba(20, 184, 166, 0.08); /* Deep mint teal backdrop */
+  --mint-ink:      #2dd4bf;                  /* Mint text */
+  --apricot:       rgba(249, 115, 22, 0.08); /* Deep apricot orange backdrop */
+  --apricot-ink:   #fb923c;                  /* Apricot text */
+  --sky:           rgba(14, 165, 233, 0.08); /* Deep sky blue backdrop */
+  --sky-ink:       #38bdf8;                  /* Sky text */
+  --lilac:         rgba(168, 85, 247, 0.08); /* Deep lilac purple backdrop */
+  --lilac-ink:     #c084fc;                  /* Lilac text */
+
+  /* Premium elevation on dark: deep drops + very soft sky/indigo tint glows */
+  --shadow-card:   0 1px 0 rgba(255,255,255,0.02) inset,
+                   0 1px 3px rgba(0,0,0,0.5),
+                   0 4px 18px -3px rgba(0,0,0,0.5);
+  --shadow-lift:   0 1px 0 rgba(255,255,255,0.03) inset,
+                   0 16px 48px -12px rgba(0,0,0,0.8);
 }
 
 html,
@@ -74,6 +105,14 @@ body {
   color: var(--ink);
   font-family: "IBM Plex Sans", system-ui, sans-serif;
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Multi-layered accent glow from the top edge in dark mode for ambient depth */
+html.dark body {
+  background-image: 
+    radial-gradient(100% 60% at 50% -10%, rgba(45, 212, 191, 0.12), transparent 50%),
+    radial-gradient(120% 70% at 15% -15%, rgba(99, 102, 241, 0.08), transparent 60%);
+  background-attachment: fixed;
 }
 
 /* Tabular figures everywhere clinical numbers appear */
