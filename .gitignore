@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+
+# macOS
+.DS_Store
+
+# Design assets (large, not needed for deploy)
+Reach Design System-handoff.zip
+extracted_design_system/

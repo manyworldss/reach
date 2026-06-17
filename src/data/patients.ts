@@ -1,0 +1,135 @@
+import type { Patient } from "../types";
+
+// Hand-authored synthetic data. No real patient information.
+// Trajectories follow patterns clinicians actually see: rapid subacute gains
+// that taper, plateaus, adherence-driven stalls, and slow chronic maintenance.
+
+export const PATIENTS: Patient[] = [
+  {
+    id: "p-olsen",
+    name: "Margaret Olsen",
+    age: 68,
+    strokeType: "Ischemic",
+    affectedSide: "Left",
+    lesionNote: "Right MCA territory",
+    weeksSinceOnset: 5,
+    phase: "Subacute",
+    history: [
+      { week: 1, date: "2026-05-12", fmaUE: 18, arat: 9, bbt: 4 },
+      { week: 2, date: "2026-05-19", fmaUE: 24, arat: 15, bbt: 8 },
+      { week: 3, date: "2026-05-26", fmaUE: 31, arat: 22, bbt: 13 },
+      { week: 4, date: "2026-06-02", fmaUE: 37, arat: 29, bbt: 18 },
+      { week: 5, date: "2026-06-09", fmaUE: 42, arat: 34, bbt: 22 },
+    ],
+    program: [
+      { name: "Tabletop forward reach", focus: "Shoulder flexion, scapular control", sets: 3, reps: 12, adherence: 90 },
+      { name: "Active finger extension", focus: "Releasing grasp", sets: 3, reps: 15, adherence: 85 },
+      { name: "Forearm supination holds", focus: "Turning the palm up", sets: 2, reps: 10, adherence: 88 },
+    ],
+  },
+  {
+    id: "p-whitfield",
+    name: "James Whitfield",
+    age: 74,
+    strokeType: "Ischemic",
+    affectedSide: "Right",
+    lesionNote: "Left MCA territory",
+    weeksSinceOnset: 9,
+    phase: "Subacute",
+    history: [
+      { week: 4, date: "2026-04-21", fmaUE: 8, arat: 3, bbt: 0 },
+      { week: 5, date: "2026-04-28", fmaUE: 11, arat: 5, bbt: 1 },
+      { week: 6, date: "2026-05-05", fmaUE: 14, arat: 7, bbt: 2 },
+      { week: 7, date: "2026-05-12", fmaUE: 15, arat: 8, bbt: 2 },
+      { week: 8, date: "2026-05-19", fmaUE: 15, arat: 8, bbt: 2 },
+      { week: 9, date: "2026-05-26", fmaUE: 15, arat: 8, bbt: 3 },
+    ],
+    program: [
+      { name: "Weight-bearing through forearm", focus: "Proximal stability", sets: 3, reps: 8, adherence: 44 },
+      { name: "Assisted wrist extension", focus: "Lifting the wrist", sets: 3, reps: 10, adherence: 38 },
+      { name: "Gross grasp and release", focus: "Holding and letting go", sets: 2, reps: 12, adherence: 41 },
+    ],
+  },
+  {
+    id: "p-bello",
+    name: "Aisha Bello",
+    age: 52,
+    strokeType: "Hemorrhagic",
+    affectedSide: "Left",
+    lesionNote: "Right basal ganglia",
+    weeksSinceOnset: 3,
+    phase: "Acute",
+    history: [
+      { week: 1, date: "2026-05-26", fmaUE: 12, arat: 5, bbt: 2 },
+      { week: 2, date: "2026-06-02", fmaUE: 19, arat: 14, bbt: 7 },
+      { week: 3, date: "2026-06-09", fmaUE: 27, arat: 21, bbt: 12 },
+    ],
+    program: [
+      { name: "Reach to grasp, large objects", focus: "Coordinated reaching", sets: 3, reps: 10, adherence: 94 },
+      { name: "Thumb opposition", focus: "Pinch precision", sets: 3, reps: 12, adherence: 90 },
+    ],
+  },
+  {
+    id: "p-tanaka",
+    name: "Robert Tanaka",
+    age: 61,
+    strokeType: "Ischemic",
+    affectedSide: "Right",
+    lesionNote: "Left corona radiata",
+    weeksSinceOnset: 22,
+    phase: "Chronic",
+    history: [
+      { week: 12, date: "2026-03-17", fmaUE: 48, arat: 38, bbt: 31 },
+      { week: 15, date: "2026-04-07", fmaUE: 54, arat: 44, bbt: 38 },
+      { week: 18, date: "2026-04-28", fmaUE: 57, arat: 48, bbt: 43 },
+      { week: 20, date: "2026-05-12", fmaUE: 58, arat: 49, bbt: 45 },
+      { week: 22, date: "2026-05-26", fmaUE: 59, arat: 50, bbt: 46 },
+    ],
+    program: [
+      { name: "Fine motor, peg board", focus: "Dexterity and speed", sets: 2, reps: 20, adherence: 78 },
+      { name: "Bimanual kitchen tasks", focus: "Functional carryover", sets: 1, reps: 1, adherence: 74 },
+    ],
+  },
+  {
+    id: "p-reyes",
+    name: "Dolores Reyes",
+    age: 70,
+    strokeType: "Ischemic",
+    affectedSide: "Left",
+    lesionNote: "Right MCA, large",
+    weeksSinceOnset: 7,
+    phase: "Subacute",
+    history: [
+      { week: 3, date: "2026-04-28", fmaUE: 6, arat: 2, bbt: 0 },
+      { week: 4, date: "2026-05-05", fmaUE: 8, arat: 3, bbt: 0 },
+      { week: 5, date: "2026-05-12", fmaUE: 9, arat: 3, bbt: 1 },
+      { week: 6, date: "2026-05-19", fmaUE: 10, arat: 4, bbt: 1 },
+      { week: 7, date: "2026-05-26", fmaUE: 10, arat: 4, bbt: 1 },
+    ],
+    program: [
+      { name: "Self range of motion, supported", focus: "Preventing tightness", sets: 3, reps: 10, adherence: 35 },
+      { name: "Visual scanning to affected side", focus: "Attention to the left", sets: 2, reps: 8, adherence: 40 },
+    ],
+  },
+  {
+    id: "p-adeyemi",
+    name: "Henry Adeyemi",
+    age: 58,
+    strokeType: "Ischemic",
+    affectedSide: "Right",
+    lesionNote: "Pontine",
+    weeksSinceOnset: 12,
+    phase: "Subacute",
+    history: [
+      { week: 6, date: "2026-04-14", fmaUE: 22, arat: 12, bbt: 8 },
+      { week: 8, date: "2026-04-28", fmaUE: 28, arat: 19, bbt: 14 },
+      { week: 10, date: "2026-05-12", fmaUE: 33, arat: 25, bbt: 19 },
+      { week: 11, date: "2026-05-19", fmaUE: 37, arat: 29, bbt: 23 },
+      { week: 12, date: "2026-05-26", fmaUE: 40, arat: 32, bbt: 26 },
+    ],
+    program: [
+      { name: "Resisted grip, putty", focus: "Grip strength", sets: 3, reps: 15, adherence: 83 },
+      { name: "Cup stacking", focus: "Speed and accuracy", sets: 2, reps: 10, adherence: 80 },
+    ],
+  },
+];

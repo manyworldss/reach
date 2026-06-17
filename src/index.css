@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* --- Surfaces & canvas --- */
+  --canvas:        #eef1f0; /* App background, cool and calm, never pure white */
+  --surface:       #ffffff; /* Cards and panels */
+  --surface-2:     #f8faf9; /* Inset and secondary surfaces */
+
+  /* --- Ink / text (deepened for more contrast / modern punch) --- */
+  --ink:           #0f1b17; /* Primary text, a deep pine near-black */
+  --ink-soft:      #2f3e39; /* Secondary headings and emphasis */
+  --muted:         #5d6e6a; /* Captions, labels, secondary text */
+
+  /* --- Lines --- */
+  --line:          #e2e7e4; /* Borders and hairlines */
+
+  /* --- Accent: petrol teal (recovery + primary action) --- */
+  --accent:        #0c7d72; /* Petrol teal, enriched a touch for more conviction */
+  --accent-ink:    #0a544c; /* Pressed / high-emphasis accent */
+  --accent-soft:   #dcefec; /* Tint fill behind accent elements */
+  --accent-bright: #20c4b0; /* Brighter teal that glows on dark hero surfaces */
+  --band:          #cfe8e1; /* The expected-recovery band */
+
+  /* --- Signal: flame orange (attention — vivid, grabs the eye) --- */
+  --signal:        #e24f1c; /* Flame orange for attention, confident not muddy */
+  --signal-soft:   #fde6dc; /* Warmer peachy tint behind pills/backgrounds */
+  --signal-ink:    #b23a12; /* High-emphasis signal text */
+  --signal-bright: #ff6a3c; /* Signal glow on dark surfaces */
+
+  /* --- Patient app tints (calm, never neon) --- */
+  --mint:          #e3f3ee;
+  --mint-ink:      #0a6157;
+  --apricot:       #ffe9d6;
+  --apricot-ink:   #b85a22;
+  --sky:           #e2eef4;
+  --sky-ink:       #2b6079;
+  --lilac:         #ece9f6;
+  --lilac-ink:     #5b4b8a;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.dark, .theme-dark {
+  /* Premium Dark Pine / Charcoal palette */
+  --canvas:        #0a1714; /* ink-deep */
+  --surface:       #0d1d19; /* surface-dark */
+  --surface-2:     #112923; /* secondary dark pine surface */
+  --ink:           #f3f7f5; /* text-on-dark */
+  --ink-soft:      #9fb3ad; /* text-on-dark-muted */
+  --muted:         #718a82;
+  --line:          rgba(255,255,255,0.12); /* line-dark */
+  --accent:        #20c4b0; /* accent-bright */
+  --accent-ink:    #5eead4;
+  --accent-soft:   rgba(32,196,176,0.15);
+  --band:          rgba(32,196,176,0.20);
+  --signal:        #ff6a3c; /* signal-bright */
+  --signal-soft:   #381e13;
+  --signal-ink:    #ff8a65;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tabular figures everywhere clinical numbers appear */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
