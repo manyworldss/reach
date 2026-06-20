@@ -4,7 +4,7 @@ import Dashboard from "./components/Dashboard";
 import PatientDetail from "./components/PatientDetail";
 import OutcomesView from "./components/OutcomesView";
 import ProgramsView from "./components/ProgramsView";
-import BillingView from "./components/BillingView";
+import EducationView from "./components/EducationView";
 import { PatientsProvider, usePatients } from "./context/PatientsContext";
 
 function MainAppContent() {
@@ -25,8 +25,8 @@ function MainAppContent() {
         return <OutcomesView onOpenPatient={setSelectedId} />;
       case "programs":
         return <ProgramsView onOpenPatient={setSelectedId} />;
-      case "billing":
-        return <BillingView onOpenPatient={setSelectedId} />;
+      case "education":
+        return <EducationView />;
       case "caseload":
       default:
         return <Dashboard onOpen={setSelectedId} />;

@@ -1,19 +1,21 @@
 import { useMemo, useState } from "react";
 import { usePatients } from "../context/PatientsContext";
 import { avgAdherence, severityOf } from "../lib/format";
-import { RTW_PROTOCOLS, SEVERITY_ORDER } from "../data/protocols";
+import { SEVERITY_BANDS, SEVERITY_ORDER, pathwaysForSeverity } from "../data/protocols";
 import type { Severity } from "../types";
 import Icon from "./Icon";
 
-const SEVERITY_TONE: Record<Severity, { dot: string; chip: string; bar: string; icon: string }> = {
-  Severe: { dot: "bg-signal", chip: "bg-signalsoft text-signal", bar: "bg-signal", icon: "flag" },
-  Moderate: { dot: "bg-apricotink", chip: "bg-apricot text-apricotink", bar: "bg-apricotink", icon: "trajectory" },
-  Mild: { dot: "bg-accent", chip: "bg-accentsoft text-accent", bar: "bg-accent", icon: "trophy" },
+const SEVERITY_TONE: Record<Severity, { dot: string; chip: string; icon: string }> = {
+  Severe: { dot: "bg-signal", chip: "bg-signalsoft text-signal", icon: "flag" },
+  Moderate: { dot: "bg-apricotink", chip: "bg-apricot text-apricotink", icon: "trajectory" },
+  Mild: { dot: "bg-accent", chip: "bg-accentsoft text-accent", icon: "trophy" },
 };
 
 export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: string) => void }) {
   const { patients } = usePatients();
   const [activeTier, setActiveTier] = useState<Severity>("Moderate");
+  const [activePathwayId, setActivePathwayId] = useState<string>(() => pathwaysForSeverity("Moderate")[0].id);
+  const [copied, setCopied] = useState(false);
 
   // Group the caseload into FMA-UE severity tiers.
   const byTier = useMemo(() => {
@@ -22,7 +24,7 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
     return groups;
   }, [patients]);
 
-  // Low-adherence patients — the early signal of a stalled, reinjury-prone return.
+  // Low-adherence patients, the early signal of a stalled home program.
   const alertPatients = useMemo(() => {
     return patients
       .map((p) => ({ ...p, adherence: avgAdherence(p) }))
@@ -30,34 +32,57 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
       .sort((a, b) => a.adherence - b.adherence);
   }, [patients]);
 
-  const protocol = RTW_PROTOCOLS[activeTier];
+  const band = SEVERITY_BANDS[activeTier];
   const tierPatients = byTier[activeTier];
   const tone = SEVERITY_TONE[activeTier];
+  const pathways = pathwaysForSeverity(activeTier);
+  const pathway = pathways.find((p) => p.id === activePathwayId) ?? pathways[0];
+
+  const selectTier = (sev: Severity) => {
+    setActiveTier(sev);
+    setActivePathwayId(pathwaysForSeverity(sev)[0].id);
+    setCopied(false);
+  };
+
+  const selectPathway = (id: string) => {
+    setActivePathwayId(id);
+    setCopied(false);
+  };
+
+  const copyDocumentation = async () => {
+    try {
+      await navigator.clipboard.writeText(pathway.documentation);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:px-10">
       <header className="border-b border-line pb-7">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted">Return-to-Work Programs</p>
-        <h1 className="mt-2 font-display text-[2.1rem] leading-tight text-ink">Severity-Based Protocols</h1>
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted">Severity-Based Programs</p>
+        <h1 className="mt-2 font-display text-[2.1rem] leading-tight text-ink">Programs and Pathways</h1>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted">
-          Programs are stratified by upper-extremity impairment severity (FMA-UE band), so every patient starts on a
-          protocol matched to where their arm actually is. The goal is a safe return to work — restoring the function the
-          job demands without pushing into reinjury and a reopened workers&rsquo; comp claim. Each protocol is a baseline; a
-          licensed therapist tailors it per patient.
+          Pick a severity band, then choose a pathway that fits the person in front of you. Severity sets the starting
+          point; the pathway sets the goal, whether that is return to work, managing left neglect, protecting a flaccid
+          shoulder, or simply getting through the day at home. Every pathway is a baseline a licensed therapist tailors
+          per patient.
         </p>
       </header>
 
-      {/* Severity tier selector — counts per tier, click to inspect the protocol */}
+      {/* Severity tier selector, counts per tier, click to inspect */}
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {SEVERITY_ORDER.map((sev) => {
           const t = SEVERITY_TONE[sev];
-          const proto = RTW_PROTOCOLS[sev];
+          const b = SEVERITY_BANDS[sev];
           const count = byTier[sev].length;
           const selected = activeTier === sev;
           return (
             <button
               key={sev}
-              onClick={() => setActiveTier(sev)}
+              onClick={() => selectTier(sev)}
               className={`text-left rounded-xl2 border bg-surface p-6 shadow-card transition-all hover:-translate-y-0.5 ${
                 selected ? "border-accent ring-1 ring-accent" : "border-line hover:border-accent/40"
               }`}
@@ -75,41 +100,59 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
                 <span className="tnum font-mono text-4xl font-semibold text-ink">{count}</span>
                 <span className="font-mono text-xs text-muted">patients</span>
               </div>
-              <p className="mt-1.5 font-mono text-[11px] text-muted">{proto.fmaRange}</p>
+              <p className="mt-1.5 font-mono text-[11px] text-muted">{b.fmaRange}</p>
             </button>
           );
         })}
       </div>
 
-      {/* Selected protocol detail + patients in this tier */}
+      {/* Selected band, its pathways, and patients in this tier */}
       <div className="mt-8 grid gap-6 md:grid-cols-5">
-        {/* Protocol baseline */}
+        {/* Pathway detail */}
         <section className="md:col-span-3 rounded-xl2 border border-line bg-surface p-6 shadow-card">
-          <div className="flex items-start justify-between gap-4 border-b border-line pb-4">
-            <div>
-              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${tone.chip}`}>
-                <span className={`h-1.5 w-1.5 rounded-full ${tone.dot}`} />
-                {activeTier} impairment &bull; {protocol.fmaRange}
-              </span>
-              <h2 className="mt-2 font-display text-[1.35rem] text-ink">Baseline Return-to-Work Protocol</h2>
-              <p className="mt-1 text-xs text-muted leading-relaxed">{protocol.summary}</p>
+          <div className="border-b border-line pb-4">
+            <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${tone.chip}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${tone.dot}`} />
+              {activeTier} impairment &bull; {band.fmaRange}
+            </span>
+            <p className="mt-2 text-xs text-muted leading-relaxed">{band.summary}</p>
+          </div>
+
+          {/* Pathway subsection selector */}
+          <div className="mt-4">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Pathways in this band</div>
+            <div className="flex flex-wrap gap-2">
+              {pathways.map((pw) => {
+                const active = pw.id === pathway.id;
+                return (
+                  <button
+                    key={pw.id}
+                    onClick={() => selectPathway(pw.id)}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all ${
+                      active
+                        ? "border-accent bg-accentsoft text-accent"
+                        : "border-line bg-surface2 text-inksoft hover:border-accent/40"
+                    }`}
+                  >
+                    <Icon name={pw.icon} size={13} duotone={active} />
+                    {pw.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Return-to-work target */}
-          <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-surface2 border border-line/60 p-4">
-            <Icon name="trophy" size={16} duotone className="text-accent shrink-0 mt-0.5" />
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-accent">Return-to-Work Target</div>
-              <p className="text-xs text-inksoft leading-relaxed mt-1">{protocol.rtwTarget}</p>
-            </div>
+          {/* Pathway header */}
+          <div className="mt-5">
+            <h2 className="font-display text-[1.35rem] text-ink">{pathway.name}</h2>
+            <p className="mt-1 text-xs text-muted leading-relaxed">{pathway.tagline}</p>
           </div>
 
           {/* Goals */}
           <div className="mt-5">
             <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Program Goals</div>
             <ul className="space-y-2">
-              {protocol.goals.map((g, i) => (
+              {pathway.goals.map((g, i) => (
                 <li key={i} className="flex gap-2.5 text-xs text-inksoft leading-relaxed">
                   <Icon name="check" size={13} className="text-accent shrink-0 mt-0.5" />
                   <span>{g}</span>
@@ -120,9 +163,9 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
 
           {/* Focus areas */}
           <div className="mt-5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Movement Focus</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Focus Areas</div>
             <div className="flex flex-wrap gap-2">
-              {protocol.focusAreas.map((f) => (
+              {pathway.focusAreas.map((f) => (
                 <span key={f} className="rounded-full border border-line bg-surface2 px-3 py-1 text-[11px] font-medium text-inksoft">
                   {f}
                 </span>
@@ -130,14 +173,14 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
             </div>
           </div>
 
-          {/* Reinjury precautions */}
+          {/* Precautions */}
           <div className="mt-5 rounded-xl border border-signal/20 bg-signalsoft/40 p-4">
             <div className="flex items-center gap-1.5 mb-2">
               <Icon name="flag" size={13} className="text-signal" duotone />
-              <div className="text-[10px] font-bold uppercase tracking-wider text-signal">Reinjury Precautions</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-signal">Precautions</div>
             </div>
             <ul className="space-y-1.5">
-              {protocol.precautions.map((p, i) => (
+              {pathway.precautions.map((p, i) => (
                 <li key={i} className="text-xs text-inksoft leading-relaxed flex gap-2">
                   <span className="text-signal">&bull;</span>
                   <span>{p}</span>
@@ -146,11 +189,13 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
             </ul>
           </div>
 
-          {/* Starter exercises */}
+          {/* Suggested activities, low and high tech */}
           <div className="mt-5">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Starter Exercises</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">
+              Suggested Activities &bull; Low and High Tech
+            </div>
             <div className="space-y-2">
-              {protocol.starter.map((ex) => (
+              {pathway.starter.map((ex) => (
                 <div key={ex.name} className="flex items-center justify-between gap-3 rounded-lg border border-line bg-surface2 p-3">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="w-7 h-7 rounded bg-accentsoft text-accent flex items-center justify-center shrink-0">
@@ -161,27 +206,64 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
                       <div className="text-[10px] text-muted truncate">{ex.focus}</div>
                     </div>
                   </div>
-                  <span className="tnum font-mono text-xs text-muted shrink-0">{ex.sets} &times; {ex.reps}</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide ${
+                        ex.tech === "high" ? "bg-sky text-skyink" : "bg-mint text-mintink"
+                      }`}
+                    >
+                      {ex.tech === "high" ? "High tech" : "Low tech"}
+                    </span>
+                    <span className="tnum font-mono text-xs text-muted">{ex.sets} &times; {ex.reps}</span>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Suggested education */}
+          <div className="mt-5">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted mb-2">Suggested Education</div>
+            <ul className="space-y-1.5">
+              {pathway.education.map((e, i) => (
+                <li key={i} className="flex gap-2.5 text-xs text-inksoft leading-relaxed">
+                  <Icon name="book" size={13} className="text-accent shrink-0 mt-0.5" duotone />
+                  <span>{e}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Copy-and-paste documentation blurb */}
+          <div className="mt-5 rounded-xl border border-line bg-surface2 p-4">
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted">Documentation Blurb</div>
+              <button
+                onClick={copyDocumentation}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-inksoft transition-all hover:bg-surface2 active:scale-[0.98]"
+              >
+                <Icon name={copied ? "check" : "copy"} size={12} className={copied ? "text-accent" : ""} />
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+            <p className="text-[11px] text-inksoft leading-relaxed">{pathway.documentation}</p>
+          </div>
+
           <p className="mt-5 border-t border-line pt-3 text-[10px] italic text-muted leading-relaxed">
-            Baseline protocol only. Open a patient to review and adjust their prescription — a licensed therapist makes the
-            final clinical call on dosage, progression, and return-to-work clearance.
+            Baseline pathway only. Open a patient to review and adjust their prescription. A licensed therapist makes the
+            final clinical call on dosage, progression, and goals.
           </p>
         </section>
 
         {/* Patients in this tier + adherence alerts */}
         <div className="md:col-span-2 space-y-6">
           <section className="rounded-xl2 border border-line bg-surface p-6 shadow-card">
-            <h2 className="font-display text-[1.25rem] text-ink mb-1">Patients in this tier</h2>
-            <p className="text-xs text-muted mb-4">{tierPatients.length} on the {activeTier.toLowerCase()} protocol</p>
+            <h2 className="font-display text-[1.25rem] text-ink mb-1">Patients in this band</h2>
+            <p className="text-xs text-muted mb-4">{tierPatients.length} in the {activeTier.toLowerCase()} band</p>
             <div className="space-y-2.5">
               {tierPatients.length === 0 ? (
                 <div className="rounded-xl bg-surface2 p-6 text-center text-xs text-muted border border-line">
-                  No patients currently in this severity tier.
+                  No patients currently in this severity band.
                 </div>
               ) : (
                 tierPatients.map((p) => (
@@ -203,14 +285,14 @@ export default function ProgramsView({ onOpenPatient }: { onOpenPatient: (id: st
             </div>
           </section>
 
-          {/* Adherence alerts — stalled patients drift off-protocol and reinjure */}
+          {/* Adherence alerts, stalled patients drift off program */}
           <section className="rounded-xl2 border border-line bg-surface p-6 shadow-card">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="h-2 w-2 rounded-full bg-signal animate-pulse" />
               <h2 className="font-display text-[1.25rem] text-ink">Action Required</h2>
             </div>
             <p className="text-xs text-muted mb-4">
-              Adherence below 60% — these patients are drifting off-protocol, the early warning for a stalled, reinjury-prone return.
+              Adherence below 60%. These patients are drifting off their program, the early warning of a stall.
             </p>
             <div className="space-y-2.5">
               {alertPatients.length === 0 ? (

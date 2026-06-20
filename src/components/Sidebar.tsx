@@ -5,7 +5,7 @@ const NAV = [
   { id: "caseload", icon: "caseload", label: "Caseload" },
   { id: "outcomes", icon: "assess", label: "Outcomes" },
   { id: "programs", icon: "dumbbell", label: "Programs" },
-  { id: "billing", icon: "billing", label: "RTM Billing" },
+  { id: "education", icon: "book", label: "Education" },
 ];
 
 interface SidebarProps {

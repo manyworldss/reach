@@ -433,6 +433,87 @@ export default function Icon({
             strokeLinejoin="round"
           />
         );
+      case "book":
+        return (
+          <>
+            <path
+              d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </>
+        );
+      case "copy":
+        return (
+          <>
+            <rect
+              x="9"
+              y="9"
+              width="13"
+              height="13"
+              rx="2"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+            />
+            <path
+              d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </>
+        );
+      case "compass":
+        return (
+          <>
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+            />
+            <polygon
+              points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+              fill="currentColor"
+              fillOpacity={duotone ? 0.5 : 0}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </>
+        );
+      case "eye":
+        return (
+          <>
+            <path
+              d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="12" cy="12" r="3" fill="currentColor" fillOpacity={duotone ? 1 : 0} />
+          </>
+        );
+      case "shield":
+        return (
+          <>
+            <path
+              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path d="M9 12l2 2 4-4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </>
+        );
       default:
         return null;
     }
