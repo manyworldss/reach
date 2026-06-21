@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import type { Patient } from "../types";
 import { MEASURES } from "../types";
-import { avgAdherence, formatDate, latest, previous, STATUS_COPY, statusOf, statusReason } from "../lib/format";
+import { avgAdherence, formatDate, latest, previous, severityOf, STATUS_COPY, statusOf, statusReason } from "../lib/format";
+import { SEVERITY_BANDS, PATHWAYS } from "../data/protocols";
 import RecoveryChart from "./RecoveryChart";
 import LogAssessmentModal from "./LogAssessmentModal";
 import EditProgramModal from "./EditProgramModal";
@@ -11,6 +12,12 @@ const STATUS_STYLES: Record<string, string> = {
   "on-track": "bg-accentsoft text-accent font-semibold",
   attention: "bg-signalsoft text-signal font-semibold",
   maintaining: "bg-line text-muted font-medium",
+};
+
+const SEVERITY_CHIP: Record<string, { chip: string; dot: string }> = {
+  Severe: { chip: "bg-signalsoft text-signal", dot: "bg-signal" },
+  Moderate: { chip: "bg-apricot text-apricotink", dot: "bg-apricotink" },
+  Mild: { chip: "bg-accentsoft text-accent", dot: "bg-accent" },
 };
 
 interface PatientDetailProps {
@@ -42,6 +49,12 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
   const prev = previous(patient);
   const status = statusOf(patient);
   const adherence = avgAdherence(patient);
+
+  // The severity band (program) and the pathways this patient is working in.
+  const severity = severityOf(patient);
+  const band = SEVERITY_BANDS[severity];
+  const patientPathways = PATHWAYS.filter((pw) => patient.pathwayIds.includes(pw.id));
+  const sevChip = SEVERITY_CHIP[severity];
 
   // Simulated logging logs for the last 30 days based on adherence
   const loggingDays = useMemo(() => {
@@ -156,6 +169,28 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
             <Icon name="spark" size={14} className="text-accent" />
             {statusReason(patient)}.
           </p>
+
+          {/* Program (severity band) and the pathways this patient is working in */}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${sevChip.chip}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${sevChip.dot}`} />
+              {severity} program &bull; {band.fmaRange}
+            </span>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-muted">Pathways</span>
+            {patientPathways.length === 0 ? (
+              <span className="text-[11px] text-muted italic">None assigned</span>
+            ) : (
+              patientPathways.map((pw) => (
+                <span
+                  key={pw.id}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface2 px-2.5 py-1 text-[11px] font-semibold text-inksoft"
+                >
+                  <Icon name={pw.icon} size={12} duotone className="text-accent" />
+                  {pw.name}
+                </span>
+              ))
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button

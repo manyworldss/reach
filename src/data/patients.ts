@@ -7,6 +7,7 @@ import type { Patient } from "../types";
 export const PATIENTS: Patient[] = [
   {
     id: "p-olsen",
+    pathwayIds: ["neglect", "adl"],
     name: "Margaret Olsen",
     age: 68,
     strokeType: "Ischemic",
@@ -29,6 +30,7 @@ export const PATIENTS: Patient[] = [
   },
   {
     id: "p-whitfield",
+    pathwayIds: ["antisublux", "adl"],
     name: "James Whitfield",
     age: 74,
     strokeType: "Ischemic",
@@ -52,6 +54,7 @@ export const PATIENTS: Patient[] = [
   },
   {
     id: "p-bello",
+    pathwayIds: ["neglect", "adl"],
     name: "Aisha Bello",
     age: 52,
     strokeType: "Hemorrhagic",
@@ -71,6 +74,7 @@ export const PATIENTS: Patient[] = [
   },
   {
     id: "p-tanaka",
+    pathwayIds: ["rtw", "finemotor"],
     name: "Robert Tanaka",
     age: 61,
     strokeType: "Ischemic",
@@ -92,6 +96,7 @@ export const PATIENTS: Patient[] = [
   },
   {
     id: "p-reyes",
+    pathwayIds: ["antisublux", "neglect"],
     name: "Dolores Reyes",
     age: 70,
     strokeType: "Ischemic",
@@ -113,6 +118,7 @@ export const PATIENTS: Patient[] = [
   },
   {
     id: "p-adeyemi",
+    pathwayIds: ["rtw", "finemotor"],
     name: "Henry Adeyemi",
     age: 58,
     strokeType: "Ischemic",

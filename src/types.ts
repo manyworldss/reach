@@ -38,6 +38,7 @@ export interface Patient {
   phase: Phase;
   history: AssessmentPoint[]; // chronological, oldest first
   program: Exercise[];
+  pathwayIds: string[]; // program pathways this patient is working in (see data/protocols.ts)
 }
 
 export type MeasureKey = "fmaUE" | "arat" | "bbt";
