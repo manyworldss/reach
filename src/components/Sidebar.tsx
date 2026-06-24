@@ -62,6 +62,13 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
             </button>
           );
         })}
+        <button
+          onClick={() => onViewChange("landing")}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] text-muted hover:bg-surface2 hover:text-ink"
+        >
+          <Icon name="compass" size={18} />
+          Marketing Site
+        </button>
       </nav>
 
       <div className="mt-auto space-y-4">

@@ -1,90 +1,65 @@
-# Reach!
+# Reach! Clinical Documentation and Research Specification
 
-A caseload tool for rehabilitation therapists tracking **upper extremity recovery after stroke**. It puts a patient's measured outcomes, expected recovery arc, and home program adherence in one place, so a clinician can answer "who needs me first, and is this patient on track" in seconds.
+A caseload and outcome tracking platform for rehabilitation therapists tracking upper extremity motor recovery after stroke. The system organizes a patient's measured outcomes, expected recovery arc, and home program adherence in one unified interface. This enables a clinician to identify in seconds who needs attention first and whether a patient is progressing on track.
 
-> Rebranded caseload tool for stroke motor rehabilitation tracking. This build was reshaped by occupational therapy feedback from a UX research and human factors review (see "Shaped by OT feedback" below).
+Reach! is designed with a clinical, human-factors-first focus. The platform addresses the broader daily occupations of stroke survivors: dressing, writing, eating, typing, and other daily activities. This is a deliberate shift from a strict focus on return to work to better serve patients across outpatient, home health, and telehealth spaces, including retired stroke survivors.
 
-## Run it
+## Clinical Purpose and Product Scope
 
-```bash
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # type-check + production build
-```
+Standardized outcome measures (Fugl-Meyer, ARAT, Box and Blocks) are the gold standard for tracking motor recovery. However, clinicians document them inconsistently because data capture is slow and scores live in disconnected systems. Home exercise adherence, which constitutes the other half of recovery, is rarely visible between visits. Reach! connects both into one clinician-facing interface while preventing double-documentation.
 
-## The problem it addresses
+## Clinical Feedback and Iterative Design Journal
 
-Standardized outcome measures (Fugl-Meyer, ARAT, Box and Blocks) are the gold standard for tracking motor recovery, but clinicians document them inconsistently because capture is slow and the scores live in disconnected places. Home exercise adherence, the other half of recovery, is rarely visible between visits. Reach! collapses both into one clinician-facing surface.
+The platform is designed around direct feedback from three Occupational Therapists to align with actual clinical workflows and human factors.
 
-## How it works now
+### Occupational Therapist 1
 
-The therapist evaluates the patient, logs standardized scores, and lets severity drive the program. The flow follows the way an OT actually works: assess, place the patient in a severity-matched program, choose a pathway that fits their real goals, and hand off education to the patient and caregiver.
+Occupational Therapist 1 provided feedback on reducing interface clutter, integrating education, and establishing severity-banded programs:
+*   **Workflow Integration**: Evaluates patients using the Fugl-Meyer Assessment (FMA), the Action Research Arm Test (ARAT), or Box and Blocks, with support for additional custom assessment entries based on individual patient needs.
+*   **Severity Bands**: FMA-UE scores map patients directly into Mild, Moderate, or Severe programs rather than generic plans.
+*   **Multi-Pathway Programming**: Implementing pathways within each severity program (such as return to work within the Mild program, Left Neglect within the Moderate and Severe programs, and Anti-Subluxation within the Severe program) to fit retired or non-working survivors.
+*   **Exercise Customization**: Allowing therapists to prescribe customized exercises, film video demonstrations, send them to the patient, and review video responses for movement analysis.
+*   **Repetition Tracking**: Tracking active physical repetitions, mental practice repetitions, and assisted daily tasks (such as eating with the affected limb).
+*   **MyChart Messaging**: A secure portal for patient-caregiver communication, success sharing, and adaptive equipment coordination.
+*   **Documentation Blurbs**: Providing copy-and-paste progress texts to simplify charting.
 
-1. **Caseload dashboard** (`Dashboard.tsx`): every patient as a card with status, latest FMA-UE, change since last visit, adherence, and a trajectory sparkline. Patients needing review sort to the top.
-2. **Outcomes** (`OutcomesView.tsx`): comparative registry of patient scores. Clinicians can filter by recovery phase, affected side, or status, and sort by measures or overall gains. High-level indicators surface the MCID (Minimal Clinically Important Difference) responders.
-3. **Programs and Pathways** (`ProgramsView.tsx`): programs are stratified by impairment **severity** (FMA-UE band), and within each band the therapist picks a **pathway** that matches the person's real goal. Pathways include Occupation-Based Daily Living, Return to Work, Left Neglect and Visual-Spatial, Anti-Subluxation and Shoulder Protection, and Fine Motor and Dexterity. Each pathway carries goals, focus areas, precautions, suggested activities with low-tech and high-tech options, suggested education, and a copy-and-paste documentation blurb for the medical chart.
-4. **Education** (`EducationView.tsx`): a first-class library of patient and caregiver resources, filterable by topic and tagged by audience and severity band, so the right guide reaches the right person at the right moment.
-5. **Patient detail** (`PatientDetail.tsx`): per-patient tabs for Overview, Assessments and Progress, Home Program, Treatment and Education, and RTM Billing. Clinicians log new outcome metrics and edit home exercise prescriptions through validated modals (`LogAssessmentModal.tsx`, `EditProgramModal.tsx`).
-6. **Recovery trajectory** (`RecoveryChart.tsx`): the signature view. Measured scores plotted over a shaded *expected-recovery band* derived from a proportional-recovery estimate.
-7. **Theme switcher**: a high-end dark mode switchable from the sidebar.
+### Occupational Therapist 2
 
-## Shaped by OT feedback
+Occupational Therapist 2 verified the treatment, pathway, and education layout:
+*   **Subjective Outcome Tracking**: Recommended a subjective progress area where patients can self-report outcomes, home exercise compliance, and how they feel about their movement between visits.
+*   **Preventing Double-Documentation**: Emphasized that clinical outcomes and assessment entries should drive the pathway recommendations directly to save time and prevent therapists from entering the same scores in multiple systems.
 
-This build responds directly to occupational therapy feedback from a UX research and human factors review. The changes made:
+### Occupational Therapist 3
 
-- **Programs are organized by severity, not stroke type.** Mild, moderate, and severe bands come straight from the FMA-UE score, so every patient starts on a program matched to where their arm actually is.
-- **Broader pathways replace a single return-to-work focus.** Return to work is now one pathway among several, realistic mainly in the mild band. Other pathways (daily living, left neglect, anti-subluxation, fine motor) reach OTs in outpatient, home health, and telehealth settings, and serve the many survivors who are retired and not working.
-- **Education became a dedicated section** instead of living buried in a patient tab, with resources tagged by audience and severity.
-- **The platform was simplified.** The standalone RTM billing dashboard was removed from primary navigation to keep the tool focused on the clinical workflow. Billing detail still lives in the per-patient view.
-- **Quick documentation built in.** Each pathway includes a copy-and-paste blurb a therapist can drop into the medical chart, so the tool supports documentation without forcing a full EHR integration.
+Occupational Therapist 3 focused on administrative workflow and family support:
+*   **Flow Expectation**: Addressed clinical typing flow during a session versus post-session documentation.
+*   **Documentation Status Tracker**: Proposed tracking whether session documentation is in-progress or completed.
+*   **Caregiver Portal**: Suggested a simplified view or update loop for family and caregivers to coordinate support at home.
 
-## Roadmap
+## Human Factors and UX Implementation
 
-Further suggestions from the same OT review, not yet built:
+The application has been reshaped around these clinical requirements:
 
-- **Customizable activities and exercises per patient** layered on top of the pathway framework, since every stroke survivor is different.
-- **Two-way video exchange.** The therapist records a task or activity and sends it to the patient; the patient sends a video response, supporting program adherence and movement analysis.
-- **Secure messaging** for patients and caregivers (in the spirit of a patient portal) to ask questions, share successes, and ask about adaptive equipment for the home.
-- **Additional assessment entries** beyond FMA, ARAT, and Box and Blocks, added per patient need.
-- **Deeper documentation and EHR connection** if a clinic's charting system calls for more than the copy-and-paste blurb.
+*   **Outcome-Driven Severity Programs**: FMA-UE scores automatically segment patients. Clinicians log assessments, and the system assigns them to a Mild, Moderate, or Severe baseline program.
+*   **Broad Pathways**:
+    *   *Occupation-Based Daily Living* (All bands): Eating, dressing, hygiene, and kitchen activities.
+    *   *Fine Motor and Dexterity* (Mild and Moderate): Pinching, typing, writing, and peg board tasks.
+    *   *Return to Work* (Mild and Moderate): Work-conditioning circuits and strength endurance.
+    *   *Left Neglect and Visual-Spatial* (Moderate and Severe): Visual scanning, anchoring, and midline crossing.
+    *   *Anti-Subluxation and Shoulder Protection* (Severe): Scapular stability, supported range of motion, and positioning.
+*   **Repetition and Adherence Auditing**: Tracks compliance metrics. Identifies when adherence drops below 60 percent as an early warning of a stalled home program.
+*   **Clinical Copy-and-Paste Documentation**: High-quality progress notes are automatically generated for each selected pathway, ready to copy directly into the clinic's Electronic Medical Record (EMR).
+*   **Subjective Patient Feedback Concept**: Conceptual designs for patients to report daily pain, energy, and perceived arm use.
+*   **Bidirectional Video and Messaging Concept**: Interactive message and video verification loops to allow asynchronous movement analysis.
 
-## Design system
+## Editorial Landing Page Design System
 
-- **Palette**: calm pine ink on a cool neutral canvas, a petrol-teal accent for recovery, clay-amber (never alarm-red) for attention. Tokens live in `src/index.css`.
-- **Type**: Fraunces (editorial display, the human layer), IBM Plex Sans (UI workhorse), IBM Plex Mono with tabular figures (the clinical instrument readout). The serif-and-mono contrast is the point: humane care delivered with clinical precision.
-- **Signature**: the recovery trajectory read against an expected band, echoed as sparklines across the caseload.
+The marketing landing page uses a warm, editorial style to contrast with typical sterile software designs. It matches the visual aesthetics of high-end print journals.
 
-## Stack
-
-React 18, TypeScript, Vite, Tailwind CSS, Recharts.
-
-## Structure
-
-```
-src/
-  App.tsx                 context-wrapped router for navigation panels
-  types.ts                domain model, outcome measures, severity bands
-  data/
-    patients.ts           synthetic caseload (initial data)
-    protocols.ts          severity bands and program pathways
-    education.ts          patient and caregiver education library
-  context/
-    PatientsContext.tsx   caseload state manager and mutations
-  lib/format.ts           status logic, deltas, severity banding, proportional-recovery model
-  components/
-    Icon.tsx              custom premium rounded & duotone icon set
-    Sidebar.tsx           rebranded navigation and theme toggle
-    Dashboard.tsx         caseload dashboard overview
-    PatientCard.tsx       nested double-bezel patient scorecard
-    Sparkline.tsx         trajectory sparkline
-    PatientDetail.tsx     per-patient tabs and modal triggers
-    RecoveryChart.tsx     recharts trajectory visualizer
-    ExerciseProgram.tsx   exercise adherence status list
-    OutcomesView.tsx      outcomes registry and filter console
-    ProgramsView.tsx      severity bands with selectable pathways
-    EducationView.tsx     patient and caregiver education library
-    LogAssessmentModal.tsx log weekly score dialog (validated)
-    EditProgramModal.tsx  assign & edit exercise prescriptions
-```
-
-`BillingView.tsx` remains in the tree but is no longer wired into navigation after the simplification. The per-patient RTM billing tab in `PatientDetail.tsx` is independent of it.
+*   **Color Palette**: A warm parchment background (`#f7f3ec`) paired with deep pine ink (`#14201b`) for typography and borders. Petrol-teal (`#0c7d72`) represents recovery and progress, while flame-orange (`#cb350f`) highlights attention and alerts.
+*   **Typography**: Fraunces (a serif typeface with editorial warmth) for display headlines. IBM Plex Sans for clean interface controls. IBM Plex Mono for clinical readings and tabular figures.
+*   **Visual Assets**:
+    *   *Rotating Wireframe Rings*: Symbolic representation of range of motion and joint angles, moving on scroll.
+    *   *Paper Grain Overlay*: Subtle SVG noise texture across the body to give a tactile feel.
+    *   *Signature Recovery Chart*: Plotted patient FMA-UE scores running over a shaded expected-recovery band. It draws dynamically on scroll, highlighting patients who are on track or drifting below their band.
+    *   *Accessibility-First Patient Interface*: Mobile mockup showing large touch targets, high contrast, and effort-based progress tracking.

@@ -43,6 +43,14 @@
   --shadow-card:   0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
   --shadow-lift:   0 4px 16px rgba(15, 23, 42, 0.08);
 
+  /* --- Type families (mapped to the fonts loaded in index.html) --- */
+  --font-ui:       "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-display:  "Fraunces", Georgia, "Times New Roman", serif;
+  --font-data:     "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* --- Signature sweep: recovery teal into attention flame --- */
+  --gradient-sunrise: linear-gradient(96deg, #0c7d72 0%, #14a08f 44%, #ff6a3c 100%);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

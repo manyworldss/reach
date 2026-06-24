@@ -5,15 +5,20 @@ import PatientDetail from "./components/PatientDetail";
 import OutcomesView from "./components/OutcomesView";
 import ProgramsView from "./components/ProgramsView";
 import EducationView from "./components/EducationView";
+import LandingPage from "./components/LandingPage";
 import { PatientsProvider, usePatients } from "./context/PatientsContext";
 
 function MainAppContent() {
   const { patients } = usePatients();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState<string>("caseload");
+  const [currentView, setCurrentView] = useState<string>("landing");
 
   // Dynamically find the selected patient from the context array so updates propagate
   const selected = patients.find((p) => p.id === selectedId) ?? null;
+
+  if (currentView === "landing") {
+    return <LandingPage onLaunchApp={() => setCurrentView("caseload")} />;
+  }
 
   const renderContent = () => {
     if (selected) {

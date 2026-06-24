@@ -1,0 +1,50 @@
+/* ============================================================
+   Reach — shared interactions: premium custom cursor + meaningful
+   motion primitives. Link this from a product surface AFTER styles.css.
+   url() in a cursor/asset is resolved relative to THIS file (assets/).
+   ============================================================ */
+
+/* Custom cursor: a sleek ink arrow; interactive elements get the teal one.
+   Hotspot at the arrow tip (6 3). */
+html.reach-cursor { cursor: url('reach-cursor.svg') 6 3, auto; }
+html.reach-cursor a,
+html.reach-cursor button,
+html.reach-cursor [role="button"],
+html.reach-cursor label,
+html.reach-cursor summary,
+html.reach-cursor .clickable,
+html.reach-cursor [data-clickable] {
+  cursor: url('reach-cursor-pointer.svg') 6 3, pointer;
+}
+html.reach-cursor input,
+html.reach-cursor textarea { cursor: text; }
+
+/* ---- Motion primitives (meaningful, guiding) ---- */
+@keyframes reachRise   { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes reachFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes reachScaleIn{ from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes reachPop    { from { opacity: 0; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes reachToast  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes reachFloat  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes reachShimmer{ 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes reachDraw   { to { stroke-dashoffset: 0; } }
+
+/* reveal-on-scroll: start hidden, add .in (via IntersectionObserver) to play */
+.reveal { opacity: 0; will-change: transform, opacity; }
+.reveal.in { animation: reachRise 0.72s var(--ease-quiet) both; }
+.reveal-2.in { animation-delay: 0.08s; }
+.reveal-3.in { animation-delay: 0.16s; }
+.reveal-4.in { animation-delay: 0.24s; }
+
+/* text color-shift accent: a gradient clip used sparingly on a key word */
+.text-shift {
+  background: var(--gradient-sunrise);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.in { opacity: 1 !important; animation: none !important; transform: none !important; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}

@@ -1,0 +1,1395 @@
+/* Scoped Stylesheet for Reach! Marketing Landing Page */
+
+.reach-landing {
+  /* ============ color variables & config ============ */
+  --paper:    #f7f3ec;   /* parchment canvas */
+  --paper-2:  #f1ebdf;   /* deeper warm band */
+  --paper-3:  #ece4d4;   /* deepest warm inset */
+  --ink-warm: #14201b;   /* pine near-black, the structural line */
+  --teal:     #0c7d72;   /* recovery teal */
+  --teal-br:  #20c4b0;
+  --orange:   #e24f1c;   /* attention orange */
+  --orange-soft: #fde6dc;
+  --orange-ink:  #b23a12;
+  --orange-br:   #ff6a3c;
+  --line-soft: rgba(20, 32, 27, 0.14);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --maxw: 1180px;
+
+  /* App theme defaults overridden inside landing */
+  --canvas: var(--paper);
+  --surface: #ffffff;
+  --line: #e1e6eb;
+  --muted: #64748b;
+  --sky: #e2eef4;
+  --sky-ink: #2b6079;
+  --mint: #e3f3ee;
+  --mint-ink: #0a6157;
+  --apricot: #ffe9d6;
+  --apricot-ink: #b85a22;
+
+  background: var(--paper);
+  color: var(--ink-warm);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Paper grain overlay */
+.reach-landing::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Base layouts & components */
+.reach-landing * {
+  box-sizing: border-box;
+}
+
+.reach-landing a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.reach-landing .wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.reach-landing .mono {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.reach-landing .bracket {
+  font-family: var(--font-data);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--teal);
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.reach-landing .bracket::before {
+  content: "[ ";
+}
+
+.reach-landing .bracket::after {
+  content: " ]";
+}
+
+.reach-landing .bracket.o {
+  color: var(--orange-ink);
+}
+
+.reach-landing .pipe {
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--teal);
+  letter-spacing: 0.02em;
+}
+
+.reach-landing em.tealword {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--teal);
+}
+
+/* ============ buttons ============ */
+.reach-landing .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--ink-warm);
+  padding: 13px 24px;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms var(--ease), box-shadow 220ms var(--ease), background 220ms var(--ease), color 220ms var(--ease);
+}
+
+.reach-landing .btn .arr {
+  transition: transform 260ms var(--ease);
+  display: inline-flex;
+}
+
+.reach-landing .btn:hover .arr {
+  transform: translateX(4px);
+}
+
+.reach-landing .btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.reach-landing .btn-teal {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+}
+
+.reach-landing .btn-teal:hover {
+  background: #0a544c;
+  box-shadow: 0 12px 30px -10px rgba(12, 125, 114, 0.6);
+  transform: translateY(-1px);
+}
+
+.reach-landing .btn-ghost {
+  background: transparent;
+  color: var(--ink-warm);
+}
+
+.reach-landing .btn-ghost:hover {
+  background: var(--ink-warm);
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+
+.reach-landing .btn-sm {
+  padding: 9px 17px;
+  font-size: 14px;
+}
+
+/* ============ announcement strip ============ */
+.reach-landing .annc {
+  position: relative;
+  z-index: 3;
+  background: var(--gradient-sunrise);
+  background-size: 220% 100%;
+  animation: anncShift 9s ease-in-out infinite;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 11px 16px;
+  letter-spacing: -0.005em;
+}
+
+@keyframes anncShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.reach-landing .annc a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============ floating pill nav ============ */
+.reach-landing .topstrip {
+  position: sticky;
+  top: 14px;
+  z-index: 30;
+  margin-top: 24px;
+  padding: 0 40px;
+  background: transparent;
+  border-bottom: none;
+}
+
+.reach-landing .navpill {
+  max-width: 1110px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  background: rgba(20, 32, 27, 0.82);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 11px 13px 11px 22px;
+  box-shadow: 0 18px 44px -24px rgba(20, 32, 27, 0.6);
+  transition: padding 280ms var(--ease), box-shadow 280ms var(--ease);
+}
+
+.reach-landing .topstrip.shrink .navpill {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  box-shadow: 0 14px 34px -22px rgba(20, 32, 27, 0.7);
+}
+
+.reach-landing .navpill .brand {
+  color: #fff;
+}
+
+.reach-landing .navpill .nav-cta {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.reach-landing .brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.reach-landing .brand img {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.reach-landing .nav-links {
+  display: flex;
+  gap: 24px;
+  margin-left: 4px;
+}
+
+.reach-landing .nav-links a {
+  font-size: 14px;
+  color: rgba(243, 247, 245, 0.68);
+  position: relative;
+  padding: 3px 0;
+  transition: color 200ms var(--ease);
+}
+
+.reach-landing .nav-links a:hover {
+  color: #fff;
+}
+
+.reach-landing .nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1.5px;
+  background: var(--teal);
+  transition: width 260ms var(--ease);
+}
+
+.reach-landing .nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ============ texture layers ============ */
+.reach-landing .tex {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.reach-landing .tex svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.reach-landing .ringspin {
+  transform-origin: 50% 50%;
+  animation: spin 120s linear infinite;
+}
+
+.reach-landing .ringspin-rev {
+  transform-origin: 50% 50%;
+  animation: spin 150s linear infinite reverse;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.reach-landing .dotgrid {
+  background-image: radial-gradient(rgba(20, 32, 27, 0.14) 1.1px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* ============ hero ============ */
+.reach-landing .hero {
+  position: relative;
+  padding: 128px 0 0;
+  overflow: hidden;
+}
+
+.reach-landing .tex-rings-r {
+  top: -150px;
+  right: -190px;
+  width: 760px;
+  height: 760px;
+  color: var(--teal);
+  opacity: 0.15;
+}
+
+.reach-landing .tex-rings-o {
+  top: 150px;
+  right: 90px;
+  width: 460px;
+  height: 460px;
+  color: var(--orange);
+  opacity: 0.13;
+}
+
+.reach-landing .hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 940px;
+  padding-bottom: 96px;
+}
+
+.reach-landing .hero .bracket {
+  display: inline-block;
+  margin-bottom: 22px;
+}
+
+.reach-landing .hero-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(44px, 7.2vw, 90px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.reach-landing .ln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+
+.reach-landing .ln-i {
+  display: block;
+  animation: lineUp 0.9s var(--ease) backwards;
+}
+
+.reach-landing .ln:nth-child(2) .ln-i {
+  animation-delay: 0.10s;
+}
+
+.reach-landing .ln:nth-child(3) .ln-i {
+  animation-delay: 0.20s;
+}
+
+.reach-landing .hero-sub {
+  font-size: 19px;
+  line-height: 1.55;
+  color: rgba(20, 32, 27, 0.74);
+  max-width: 560px;
+  margin: 30px 0 0;
+  animation: fadeUp 0.8s var(--ease) 0.5s backwards;
+}
+
+.reach-landing .hero-cta {
+  display: flex;
+  gap: 13px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s var(--ease) 0.66s backwards;
+}
+
+.reach-landing .hero-meta {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  margin-top: 44px;
+  flex-wrap: wrap;
+  animation: fadeIn 0.9s var(--ease) 0.9s backwards;
+}
+
+@keyframes lineUp {
+  from { transform: translateY(112%); }
+  to { transform: none; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.reach-landing .hero-meta .stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.reach-landing .hero-meta .stat b {
+  font-family: var(--font-data);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink-warm);
+}
+
+.reach-landing .hero-meta .stat span {
+  font-size: 12.5px;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.reach-landing .hero-meta .sep {
+  width: 1px;
+  height: 34px;
+  background: var(--line-soft);
+}
+
+/* ============ pathway marquee ============ */
+.reach-landing .marquee {
+  border-top: 1px solid var(--ink-warm);
+  border-bottom: 1px solid var(--ink-warm);
+  background: var(--paper-2);
+  overflow: hidden;
+  padding: 16px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.reach-landing .mq-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  width: max-content;
+  animation: mq 38s linear infinite;
+}
+
+@keyframes mq {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.reach-landing .mq-item {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink-warm);
+  padding: 0 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.reach-landing .mq-item::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--orange);
+  display: inline-block;
+}
+
+/* ============ generic section ============ */
+.reach-landing section {
+  position: relative;
+  z-index: 2;
+}
+
+.reach-landing .sec {
+  padding: 104px 0;
+  position: relative;
+}
+
+.reach-landing .sec-head {
+  max-width: 700px;
+  margin-bottom: 54px;
+}
+
+.reach-landing .sec-head .bracket {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.reach-landing .sec-h {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.0;
+  letter-spacing: -0.022em;
+  margin: 0;
+}
+
+.reach-landing .sec-p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(20, 32, 27, 0.72);
+  margin: 20px 0 0;
+  max-width: 580px;
+}
+
+.reach-landing .rule {
+  height: 1px;
+  background: var(--ink-warm);
+  position: relative;
+  z-index: 2;
+}
+
+/* ============ how it works ============ */
+.reach-landing .steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--ink-warm);
+}
+
+.reach-landing .step {
+  padding: 30px 26px 38px;
+  border-right: 1px solid var(--line-soft);
+  position: relative;
+}
+
+.reach-landing .step:last-child {
+  border-right: none;
+}
+
+.reach-landing .step .pipe {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.reach-landing .step h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 23px;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+}
+
+.reach-landing .step p {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(20, 32, 27, 0.7);
+  margin: 0;
+}
+
+.reach-landing .step .ico {
+  width: 34px;
+  height: 34px;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+
+.reach-landing .step:nth-child(3) .ico {
+  color: var(--orange);
+}
+
+/* ============ split layout ============ */
+.reach-landing .split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* ============ platform: caseload mini ============ */
+.reach-landing .caseload {
+  border: 1px solid var(--ink-warm);
+  border-radius: 28px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -34px rgba(20, 32, 27, 0.4);
+}
+
+.reach-landing .caseload .cl-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.reach-landing .caseload .cl-top b {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.reach-landing .clrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.reach-landing .clrow:last-child {
+  border-bottom: none;
+}
+
+.reach-landing .clrow .av {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-data);
+  font-size: 14px;
+  color: #fff;
+}
+
+.reach-landing .clrow .nm {
+  flex: 1;
+  min-width: 0;
+}
+
+.reach-landing .clrow .nm b {
+  font-size: 14.5px;
+  font-weight: 600;
+  display: block;
+}
+
+.reach-landing .clrow .nm span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.reach-landing .chip {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.reach-landing .chip.ok {
+  background: var(--accent-soft);
+  color: var(--teal);
+}
+
+.reach-landing .chip.drift {
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+}
+
+.reach-landing .clrow.flagged {
+  background: linear-gradient(90deg, var(--signal-soft) 0%, transparent 70%);
+}
+
+.reach-landing .spark {
+  width: 76px;
+  height: 30px;
+  flex: none;
+}
+
+.reach-landing .platform-points {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 34px;
+}
+
+.reach-landing .ppoint {
+  display: flex;
+  gap: 14px;
+}
+
+.reach-landing .ppoint .pn {
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--teal);
+  flex: none;
+  padding-top: 2px;
+}
+
+.reach-landing .ppoint b {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 19px;
+}
+
+.reach-landing .ppoint p {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(20, 32, 27, 0.7);
+  margin: 4px 0 0;
+}
+
+/* ============ pathways ============ */
+.reach-landing .pathways {
+  background: var(--paper-2);
+  position: relative;
+}
+
+.reach-landing .pathways .dotgrid-l {
+  inset: 0;
+  opacity: 0.6;
+}
+
+.reach-landing .path-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.reach-landing .pcard {
+  border: 1px solid var(--ink-warm);
+  border-radius: 24px;
+  padding: 24px;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  transition: transform 260ms var(--ease), box-shadow 260ms var(--ease);
+}
+
+.reach-landing .pcard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px -26px rgba(20, 32, 27, 0.45);
+}
+
+.reach-landing .pcard.lead {
+  grid-column: span 3;
+  background: #080c14;
+  border-color: #080c14;
+  color: #fff;
+}
+
+.reach-landing .pcard.span2 {
+  grid-column: span 3;
+}
+
+.reach-landing .pcard.span3 {
+  grid-column: span 2;
+}
+
+.reach-landing .pcard .pidx {
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--teal);
+}
+
+.reach-landing .pcard.lead .pidx {
+  color: var(--teal-br);
+}
+
+.reach-landing .pcard h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.012em;
+  margin: 14px 0 8px;
+}
+
+.reach-landing .pcard.lead h3 {
+  font-size: 30px;
+}
+
+.reach-landing .pcard p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(20, 32, 27, 0.7);
+  margin: 0;
+}
+
+.reach-landing .pcard.lead p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+}
+
+.reach-landing .pcard .pico {
+  width: 30px;
+  height: 30px;
+  color: var(--teal);
+}
+
+.reach-landing .pcard.lead .pico {
+  color: var(--teal-br);
+}
+
+.reach-landing .pcard .band {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(12, 125, 114, 0.1);
+  color: var(--teal);
+  display: inline-block;
+  margin-top: 14px;
+}
+
+.reach-landing .pcard.rtw .band {
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+}
+
+.reach-landing .pcard.lead .lead-hero {
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 200px;
+  height: 200px;
+  color: var(--teal-br);
+  opacity: 0.18;
+}
+
+/* ============ patient app ============ */
+.reach-landing .phone {
+  width: 280px;
+  height: 580px;
+  border-radius: 44px;
+  background: #080c14;
+  padding: 11px;
+  box-shadow: 0 50px 100px -40px rgba(10, 23, 20, 0.6);
+  position: relative;
+  flex: none;
+}
+
+.reach-landing .phone .screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 34px;
+  background: #ffffff;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.reach-landing .phone .notch {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 22px;
+  background: #080c14;
+  border-radius: 999px;
+  z-index: 5;
+}
+
+.reach-landing .pa-hero {
+  background: #080c14;
+  color: #fff;
+  padding: 40px 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.reach-landing .pa-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 80% at 80% 0%, rgba(32, 196, 176, 0.32), transparent 60%);
+}
+
+.reach-landing .pa-hero .lab {
+  font-family: var(--font-data);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--teal-br);
+  position: relative;
+}
+
+.reach-landing .pa-hero .big {
+  font-family: var(--font-data);
+  font-size: 34px;
+  position: relative;
+  margin-top: 6px;
+}
+
+.reach-landing .pa-hero .sm {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  margin-top: 4px;
+}
+
+.reach-landing .pa-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  margin-top: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.reach-landing .pa-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  border-radius: 999px;
+  background: var(--teal-br);
+}
+
+.reach-landing .pa-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reach-landing .pa-task {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid #e1e6eb;
+  border-radius: 15px;
+}
+
+.reach-landing .pa-task .t-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reach-landing .pa-task b {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+}
+
+.reach-landing .pa-task span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.reach-landing .app-beats {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reach-landing .beat {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.reach-landing .beat:last-child {
+  border-bottom: none;
+}
+
+.reach-landing .beat .bi {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(12, 125, 114, 0.08);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.reach-landing .beat:nth-child(2) .bi {
+  background: var(--signal-soft);
+  color: var(--signal-ink);
+}
+
+.reach-landing .beat b {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.reach-landing .beat p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(20, 32, 27, 0.7);
+  margin: 3px 0 0;
+}
+
+/* ============ accessibility badges ============ */
+.reach-landing .accbadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.reach-landing .accbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.reach-landing .accbadge svg {
+  width: 15px;
+  height: 15px;
+  color: var(--teal);
+  flex: none;
+}
+
+/* ============ trajectory dark band ============ */
+.reach-landing .traj {
+  background: #080c14;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 104px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.reach-landing .traj::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(54% 70% at 22% 12%, rgba(32, 196, 176, 0.2), transparent 60%);
+}
+
+.reach-landing .tex-waves-d {
+  bottom: -6%;
+  left: -6%;
+  width: 130%;
+  height: 60%;
+  color: var(--teal-br);
+  opacity: 0.16;
+}
+
+.reach-landing .traj .sec-h {
+  color: #fff;
+}
+
+.reach-landing .traj .sec-p {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.reach-landing .traj-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.reach-landing .chartcard {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 26px;
+  position: relative;
+}
+
+.reach-landing .chartcard .clab {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 14px;
+}
+
+.reach-landing .draw {
+  stroke-dasharray: 620;
+  stroke-dashoffset: 620;
+  transition: stroke-dashoffset 1.6s var(--ease);
+}
+
+.reach-landing .chartcard.in .draw {
+  stroke-dashoffset: 0;
+}
+
+.reach-landing .draw.o {
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  transition: stroke-dashoffset 1.6s var(--ease) 0.4s;
+}
+
+.reach-landing .chartcard.in .draw.o {
+  stroke-dashoffset: 0;
+}
+
+.reach-landing .chart-band {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+.reach-landing .chartcard.in .chart-band {
+  opacity: 1;
+}
+
+.reach-landing .chart-dot {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease) 1.5s;
+}
+
+.reach-landing .chartcard.in .chart-dot {
+  opacity: 1;
+}
+
+.reach-landing .clegend {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.reach-landing .clegend span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.reach-landing .clegend i {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.reach-landing .traj-foot {
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 26px;
+}
+
+/* ============ trust ============ */
+.reach-landing .trust {
+  background: var(--paper);
+}
+
+.reach-landing .trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 12px;
+}
+
+.reach-landing .tcard {
+  border: 1px solid var(--ink-warm);
+  border-radius: 26px;
+  padding: 28px;
+  background: var(--paper-2);
+  transition: transform 240ms var(--ease);
+}
+
+.reach-landing .tcard:hover {
+  transform: translateY(-3px);
+}
+
+.reach-landing .tcard .ti {
+  width: 40px;
+  height: 40px;
+  color: var(--teal);
+  margin-bottom: 18px;
+}
+
+.reach-landing .tcard b {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+}
+
+.reach-landing .tcard p {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(20, 32, 27, 0.7);
+  margin: 9px 0 0;
+}
+
+/* ============ final CTA ============ */
+.reach-landing .cta {
+  padding: 130px 0 122px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.reach-landing .tex-rings-c {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  color: var(--teal);
+  opacity: 0.12;
+}
+
+.reach-landing .cta-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.reach-landing .cta h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.reach-landing .cta p {
+  font-size: 18px;
+  color: rgba(20, 32, 27, 0.72);
+  margin: 22px auto 0;
+  max-width: 480px;
+  line-height: 1.55;
+}
+
+.reach-landing .waitlist {
+  display: flex;
+  gap: 10px;
+  max-width: 480px;
+  margin: 38px auto 0;
+}
+
+.reach-landing .waitlist input {
+  flex: 1;
+  min-width: 0;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-warm);
+  background: #ffffff;
+  padding: 0 22px;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  color: var(--ink-warm);
+  outline: none;
+  transition: box-shadow 200ms, border-color 200ms;
+}
+
+.reach-landing .waitlist input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(12, 125, 114, 0.15);
+}
+
+.reach-landing .waitlist .btn {
+  height: 54px;
+}
+
+.reach-landing .sentmsg {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--teal);
+  justify-content: center;
+  margin-top: 38px;
+}
+
+/* ============ footer ============ */
+.reach-landing footer {
+  border-top: 1px solid var(--ink-warm);
+  padding: 40px 0 48px;
+  background: var(--paper);
+}
+
+.reach-landing footer .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.reach-landing footer .f-links {
+  display: flex;
+  gap: 24px;
+}
+
+.reach-landing footer .f-links a {
+  font-size: 13.5px;
+  color: rgba(20, 32, 27, 0.7);
+}
+
+.reach-landing footer .f-links a:hover {
+  color: var(--teal);
+}
+
+.reach-landing footer .f-note {
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ============ scroll reveal ============ */
+.reach-landing .rv {
+  opacity: 0;
+  transform: translateY(34px) scale(0.985);
+  filter: blur(9px);
+  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease), filter 0.85s var(--ease);
+  will-change: opacity, transform, filter;
+}
+
+.reach-landing .rv.in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.reach-landing .rv-d1.in { transition-delay: 0.08s; }
+.reach-landing .rv-d2.in { transition-delay: 0.16s; }
+.reach-landing .rv-d3.in { transition-delay: 0.24s; }
+.reach-landing .rv-d4.in { transition-delay: 0.32s; }
+.reach-landing .rv-d5.in { transition-delay: 0.40s; }
+
+/* Accessibility badges reveal with a quick stagger */
+.reach-landing .accbadge.rv {
+  transform: translateY(16px) scale(0.96);
+  filter: blur(4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .reach-landing .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .reach-landing .step:nth-child(2) {
+    border-right: none;
+  }
+  .reach-landing .step {
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .reach-landing .split, .reach-landing .traj-split {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+  .reach-landing .path-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .reach-landing .pcard.lead, .reach-landing .pcard.span2, .reach-landing .pcard.span3 {
+    grid-column: span 2;
+  }
+  .reach-landing .trust-grid {
+    grid-template-columns: 1fr;
+  }
+  .reach-landing .nav-links {
+    display: none;
+  }
+}
