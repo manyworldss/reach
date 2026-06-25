@@ -1,9 +1,30 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  Area,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import "./LandingPage.css";
 
 interface LandingPageProps {
   onLaunchApp: () => void;
 }
+
+const chartData = [
+  { week: 1, measured: 18, drifting: 18, expLow: 10, expHigh: 22, expMid: 16 },
+  { week: 2, measured: 24, drifting: 24, expLow: 14, expHigh: 30, expMid: 22 },
+  { week: 3, measured: 31, drifting: 31, expLow: 19, expHigh: 37, expMid: 28 },
+  { week: 4, measured: 37, drifting: 28, expLow: 23, expHigh: 43, expMid: 33 },
+  { week: 5, measured: 42, drifting: 25, expLow: 26, expHigh: 49, expMid: 37 },
+  { week: 6, measured: 45, drifting: 23, expLow: 28, expHigh: 52, expMid: 40 },
+  { week: 7, measured: 47, drifting: 22, expLow: 30, expHigh: 54, expMid: 42 },
+  { week: 8, measured: 48, drifting: 21, expLow: 31, expHigh: 56, expMid: 43 },
+];
 
 export default function LandingPage({ onLaunchApp }: LandingPageProps) {
   const [email, setEmail] = useState("");
@@ -141,25 +162,41 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
 
       {/* ============ HERO ============ */}
       <section className="hero" id="hero">
-        <div className="tex tex-rings-r" data-parallax="-0.12" aria-hidden="true">
-          <svg className="ringspin" viewBox="0 0 760 760" fill="none">
-            <g stroke="currentColor" strokeWidth="1.3">
-              <ellipse cx="380" cy="380" rx="372" ry="372" />
-              <ellipse cx="380" cy="380" rx="300" ry="300" />
-              <ellipse cx="380" cy="380" rx="228" ry="228" />
-              <ellipse cx="380" cy="380" rx="156" ry="156" />
-              <ellipse cx="380" cy="380" rx="84" ry="84" />
+        <div className="tex tex-coord-mesh" data-parallax="-0.12" aria-hidden="true">
+          <svg viewBox="0 0 800 800" fill="none" className="coordspin">
+            {/* Fine coordinate grid lines */}
+            <g stroke="rgba(20, 32, 27, 0.05)" strokeWidth="1">
+              <line x1="100" y1="0" x2="100" y2="800" />
+              <line x1="200" y1="0" x2="200" y2="800" />
+              <line x1="300" y1="0" x2="300" y2="800" />
+              <line x1="400" y1="0" x2="400" y2="800" strokeWidth="1.5" stroke="rgba(20, 32, 27, 0.1)" />
+              <line x1="500" y1="0" x2="500" y2="800" />
+              <line x1="600" y1="0" x2="600" y2="800" />
+              <line x1="700" y1="0" x2="700" y2="800" />
+              
+              <line x1="0" y1="100" x2="800" y2="100" />
+              <line x1="0" y1="200" x2="800" y2="200" />
+              <line x1="0" y1="300" x2="800" y2="300" />
+              <line x1="0" y1="400" x2="800" y2="400" strokeWidth="1.5" stroke="rgba(20, 32, 27, 0.1)" />
+              <line x1="0" y1="500" x2="800" y2="500" />
+              <line x1="0" y1="600" x2="800" y2="600" />
+              <line x1="0" y1="700" x2="800" y2="700" />
             </g>
-          </svg>
-        </div>
-        <div className="tex tex-rings-o" data-parallax="0.08" aria-hidden="true">
-          <svg className="ringspin-rev" viewBox="0 0 460 460" fill="none">
-            <g stroke="currentColor" strokeWidth="1.3">
-              <ellipse cx="230" cy="230" rx="224" ry="224" />
-              <ellipse cx="230" cy="230" rx="162" ry="162" />
-              <ellipse cx="230" cy="230" rx="100" ry="100" />
-              <ellipse cx="230" cy="230" rx="44" ry="44" />
+            {/* Concentric helper curves */}
+            <g stroke="rgba(12, 125, 114, 0.08)" strokeWidth="1">
+              <circle cx="400" cy="400" r="300" strokeDasharray="3 3" />
+              <circle cx="400" cy="400" r="200" />
+              <circle cx="400" cy="400" r="100" strokeDasharray="4 6" />
             </g>
+            {/* Dynamic intersecting trajectory curves */}
+            <path d="M50 700 C 150 600, 300 450, 400 400 C 500 350, 650 200, 750 100" stroke="var(--teal)" strokeWidth="1.5" opacity="0.25" strokeDasharray="5 5" />
+            <path d="M100 650 C 250 500, 350 420, 400 400 C 450 380, 550 300, 700 150" stroke="var(--teal)" strokeWidth="2.5" opacity="0.35" />
+            <path d="M400 400 C 480 430, 600 480, 750 520" stroke="var(--orange)" strokeWidth="2" opacity="0.25" strokeDasharray="2 4" />
+            {/* Intersection coordinate dots */}
+            <circle cx="400" cy="400" r="5" fill="var(--teal)" />
+            <circle cx="583" cy="266" r="4" fill="var(--teal)" opacity="0.6" />
+            <circle cx="215" cy="535" r="4" fill="var(--teal)" opacity="0.6" />
+            <circle cx="510" cy="442" r="4" fill="var(--orange)" opacity="0.6" />
           </svg>
         </div>
 
@@ -229,12 +266,12 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       {/* ============ HOW IT WORKS ============ */}
       <section className="sec" id="how">
         <div className="wrap">
-          <div className="sec-head rv">
+          <div className="sec-head rv rv-fade">
             <span className="bracket">how it works</span>
             <h2 className="sec-h">From the first assessment to everyday life, one connected loop.</h2>
           </div>
           <div className="steps">
-            <div className="step rv">
+            <div className="step rv rv-zoom">
               <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 18 L9 11 L13 14 L20 5" />
                 <path d="M4 21h16" />
@@ -243,7 +280,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <h3>Assess</h3>
               <p>Log FMA-UE, ARAT, and Box and Blocks. Every score is read against the expected recovery band.</p>
             </div>
-            <div className="step rv rv-d1">
+            <div className="step rv rv-zoom rv-d1">
               <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12h6M3 7h10M3 17h8" />
                 <circle cx="18" cy="15" r="3.4" />
@@ -252,7 +289,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <h3>Match to severity</h3>
               <p>The FMA-UE score sets a severity band, so every patient starts where their arm actually is.</p>
             </div>
-            <div className="step rv rv-d2">
+            <div className="step rv rv-zoom rv-d2">
               <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 3v18l7-4 7 4V3z" />
                 <path d="M9 9h6" />
@@ -261,7 +298,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <h3>Choose a pathway</h3>
               <p>Pick the pathway that fits their real goal, from everyday living to return to work, with goals and precautions built in.</p>
             </div>
-            <div className="step rv rv-d3">
+            <div className="step rv rv-zoom rv-d3">
               <svg className="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 12a9 9 0 1 1-3-6.7" />
                 <path d="M21 4v4h-4" />
@@ -280,7 +317,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       <section className="sec" id="platform">
         <div className="wrap">
           <div className="split">
-            <div className="rv">
+            <div className="rv rv-slide-up">
               <div className="sec-head" style={{ marginBottom: 0 }}>
                 <span className="bracket">the platform</span>
                 <h2 className="sec-h">Who needs me first, and is this patient on track?</h2>
@@ -313,7 +350,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               </div>
             </div>
 
-            <div className="caseload rv rv-d1">
+            <div className="caseload rv rv-zoom">
               <div className="cl-top">
                 <b>Caseload</b>
                 <span className="mono" style={{ fontSize: "12px", color: "var(--muted)" }}>
@@ -377,65 +414,108 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ============ PATHWAYS ============ */}
+      {/* ============ PATHWAYS (BENTO GRID) ============ */}
       <section className="sec pathways" id="pathways">
         <div className="tex dotgrid dotgrid-l" aria-hidden="true" data-parallax="0.05" />
         <div className="wrap">
-          <div className="sec-head rv">
+          <div className="sec-head rv rv-fade">
             <span className="bracket">five pathways, one framework</span>
             <h2 className="sec-h">A pathway for the life they're getting back to.</h2>
             <p className="sec-p">
               Programs are organized by severity. Within each band, the therapist chooses the pathway that matches the person's real goal.
             </p>
           </div>
-          <div className="path-grid">
-            <div className="pcard lead rv">
-              <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 11V7a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v3M9 11V5.5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2V11M13 11V6.5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2V13c0 4-2.5 7-6.5 7S5 17 5 13v-1a2 2 0 0 1 4 0" />
-              </svg>
-              <h3>Occupation-based daily living</h3>
-              <p>Eating, dressing, washing, reaching a shelf. The movements a day is quietly made of, rebuilt one task at a time.</p>
-              <span className="band">All bands</span>
-              <svg className="lead-hero" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <ellipse cx="12" cy="12" rx="11" ry="11" />
-                <ellipse cx="12" cy="12" rx="7" ry="7" />
-                <ellipse cx="12" cy="12" rx="3" ry="3" />
-              </svg>
+          
+          <div className="path-grid-bento">
+            {/* Bento Card 1: Occupation-based daily living */}
+            <div className="bento-card bento-lead rv rv-zoom">
+              <div className="bento-glow" />
+              <div className="bento-content">
+                <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 11V7a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v3M9 11V5.5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2V11M13 11V6.5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2V13c0 4-2.5 7-6.5 7S5 17 5 13v-1a2 2 0 0 1 4 0" />
+                </svg>
+                <h3>Occupation-based daily living</h3>
+                <p>Eating, dressing, washing, reaching a shelf. The movements a day is quietly made of, rebuilt one task at a time.</p>
+                <span className="band">All bands</span>
+              </div>
+              <div className="bento-graphic bento-graphic-adl">
+                <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.2">
+                  <circle cx="100" cy="100" r="90" strokeDasharray="3 3" className="adl-ring-1" />
+                  <circle cx="100" cy="100" r="60" className="adl-ring-2" />
+                  <circle cx="100" cy="100" r="30" className="adl-ring-3" />
+                  <path d="M100 10 L100 190 M10 L100 100 L190 100" strokeDasharray="2 4" className="adl-axis" />
+                </svg>
+              </div>
             </div>
-            <div className="pcard span2 rv rv-d1">
-              <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 13V4.5a1.5 1.5 0 0 1 3 0V12M11 12V3.5a1.5 1.5 0 0 1 3 0V12M14 12V5.5a1.5 1.5 0 0 1 3 0V14c0 3.3-2.2 6-6 6s-5-2-6.5-4.5L4 13a1.6 1.6 0 0 1 2.7-1.7L8 13" />
-              </svg>
-              <h3>Fine motor &amp; dexterity</h3>
-              <p>Writing, buttons, typing, picking up the small things that fill a day.</p>
-              <span className="band">Mild · Moderate</span>
+
+            {/* Bento Card 2: Fine motor & dexterity */}
+            <div className="bento-card bento-standard rv rv-zoom rv-d1">
+              <div className="bento-content">
+                <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M8 13V4.5a1.5 1.5 0 0 1 3 0V12M11 12V3.5a1.5 1.5 0 0 1 3 0V12M14 12V5.5a1.5 1.5 0 0 1 3 0V14c0 3.3-2.2 6-6 6s-5-2-6.5-4.5L4 13a1.6 1.6 0 0 1 2.7-1.7L8 13" />
+                </svg>
+                <h3>Fine motor &amp; dexterity</h3>
+                <p>Writing, buttons, typing, picking up the small things that fill a day.</p>
+                <span className="band">Mild · Moderate</span>
+              </div>
+              <div className="bento-dots" />
             </div>
-            <div className="pcard rtw span3 rv rv-d2">
-              <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="7" width="18" height="13" rx="2.5" />
-                <path d="M8.5 7V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1" />
-              </svg>
-              <h3>Return to work</h3>
-              <p>A graded path back to the job, for those ready for it.</p>
-              <span className="band">Mostly mild</span>
+
+            {/* Bento Card 3: Return to work */}
+            <div className="bento-card bento-standard rv rv-zoom rv-d2">
+              <div className="bento-content">
+                <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="7" width="18" height="13" rx="2.5" />
+                  <path d="M8.5 7V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1" />
+                </svg>
+                <h3>Return to work</h3>
+                <p>A graded path back to the job, for those ready for it.</p>
+                <span className="band">Mostly mild</span>
+              </div>
+              <div className="bento-work-path">
+                <div className="line-path" />
+                <div className="dot-node node-1" />
+                <div className="dot-node node-2" />
+                <div className="dot-node node-3" />
+              </div>
             </div>
-            <div className="pcard span3 rv rv-d3">
-              <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 3v18M3 12h9" />
-              </svg>
-              <h3>Left neglect &amp; visual-spatial</h3>
-              <p>Rebuilding awareness of the affected side.</p>
-              <span className="band">Moderate · Severe</span>
+
+            {/* Bento Card 4: Left neglect & visual-spatial */}
+            <div className="bento-card bento-standard rv rv-zoom rv-d3">
+              <div className="bento-content">
+                <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 3v18M3 12h9" />
+                </svg>
+                <h3>Left neglect &amp; visual-spatial</h3>
+                <p>Rebuilding awareness of the affected side.</p>
+                <span className="band">Moderate · Severe</span>
+              </div>
+              <div className="bento-spatial-grid" />
             </div>
-            <div className="pcard span2 rv rv-d4">
-              <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
-                <path d="M9 12l2 2 4-4" />
-              </svg>
-              <h3>Anti-subluxation &amp; shoulder protection</h3>
-              <p>Protecting the shoulder while strength returns.</p>
-              <span className="band">Severe</span>
+
+            {/* Bento Card 5: Anti-subluxation & shoulder protection */}
+            <div className="bento-card bento-wide rv rv-zoom rv-d4">
+              <div className="bento-content">
+                <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M12 12v8M9 16h6" strokeWidth="2" />
+                  <path d="M12 20l-3-3M12 20l3-3" />
+                </svg>
+                <h3>Anti-subluxation &amp; shoulder protection</h3>
+                <p>Protecting the shoulder while strength returns during recovery stages.</p>
+                <span className="band">Severe</span>
+              </div>
+              <div className="bento-shoulder-visual">
+                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="50" cy="50" r="40" strokeDasharray="3 3" className="sh-ring" />
+                  <path d="M35 30 C 45 35, 55 35, 65 30" strokeWidth="2" strokeLinecap="round" className="sh-joint" />
+                  <circle cx="50" cy="48" r="10" fill="rgba(12, 125, 114, 0.08)" stroke="var(--teal)" strokeWidth="1.5" className="sh-head" />
+                  <path d="M50 58 L50 85" strokeWidth="2.5" strokeLinecap="round" className="sh-bone" />
+                  <path d="M30 65 C 40 75, 60 75, 70 65" stroke="var(--orange)" strokeWidth="2" strokeDasharray="2 2" strokeLinecap="round" className="sh-cradle" />
+                  <path d="M50 78 L50 68 M47 72 L50 68 L53 72" stroke="var(--orange)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sh-arrow" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -447,7 +527,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       <section className="sec" id="app">
         <div className="wrap">
           <div className="split">
-            <div className="rv" style={{ display: "flex", justifyContent: "center" }}>
+            <div className="rv rv-slide-up" style={{ display: "flex", justifyContent: "center" }}>
               <div className="phone" data-parallax="-0.05">
                 <div className="notch" />
                 <div className="screen">
@@ -498,7 +578,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               </div>
             </div>
 
-            <div className="rv rv-d1">
+            <div className="rv rv-slide-up rv-d1">
               <div className="sec-head" style={{ marginBottom: "34px" }}>
                 <span className="bracket">the companion</span>
                 <h2 className="sec-h">A companion for the everyday movements.</h2>
@@ -576,7 +656,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
         </div>
         <div className="wrap">
           <div className="traj-split">
-            <div className="rv">
+            <div className="rv rv-slide-up">
               <div className="sec-head" style={{ marginBottom: 0 }}>
                 <span className="bracket">the signature</span>
                 <h2 className="sec-h">Recovery you can see, against the expected band.</h2>
@@ -587,24 +667,98 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <p className="traj-foot">RTM billing lives quietly in each patient's record.</p>
             </div>
 
-            <div className="chartcard rv rv-d1" id="chartcard" ref={chartRef}>
-              <div className="clab">
-                <span>FMA-UE</span>
+            <div className="chartcard rv rv-zoom" id="chartcard" ref={chartRef} style={{ height: 320, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="clab" style={{ flex: "none", marginBottom: 8 }}>
+                <span>FMA-UE SCORE</span>
                 <span>weeks since onset</span>
               </div>
-              <svg viewBox="0 0 460 240" fill="none" width="100%">
-                {/* expected band */}
-                <path className="chart-band" d="M10 196 C140 150 280 96 450 44 L450 96 C280 150 140 196 10 222 Z" fill="var(--teal-br)" fillOpacity="0.14" />
-                {/* baseline */}
-                <line x1="10" y1="222" x2="450" y2="222" stroke="var(--line-dark)" strokeWidth="1" />
-                {/* measured (on track) */}
-                <path className="draw" d="M10 210 C90 188 150 150 220 130 C300 108 380 88 450 70" stroke="var(--teal-br)" strokeWidth="3" strokeLinecap="round" />
-                {/* drifting alternative */}
-                <path className="draw o" d="M220 130 C290 138 360 150 450 168" stroke="var(--orange-br)" strokeWidth="2.5" strokeDasharray="2 7" strokeLinecap="round" />
-                <circle className="chart-dot" cx="450" cy="70" r="5" fill="var(--teal-br)" />
-                <circle className="chart-dot" cx="450" cy="168" r="5" fill="var(--orange-br)" />
-              </svg>
-              <div className="clegend">
+              
+              <div style={{ flex: 1, width: "100%", height: "100%", minHeight: 180 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={chartData} margin={{ top: 8, right: 8, bottom: 4, left: -22 }}>
+                    <defs>
+                      <linearGradient id="landingBandFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--teal-br)" stopOpacity={0.16} />
+                        <stop offset="100%" stopColor="var(--teal-br)" stopOpacity={0.02} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke="rgba(255, 255, 255, 0.08)" vertical={false} />
+                    <XAxis
+                      dataKey="week"
+                      tickFormatter={(w) => `wk ${w}`}
+                      stroke="rgba(255, 255, 255, 0.4)"
+                      tick={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+                      tickLine={false}
+                      axisLine={{ stroke: "rgba(255, 255, 255, 0.12)" }}
+                    />
+                    <YAxis
+                      domain={[0, 66]}
+                      stroke="rgba(255, 255, 255, 0.4)"
+                      tick={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+                      tickLine={false}
+                      axisLine={false}
+                      width={38}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="expHigh"
+                      stroke="none"
+                      fill="url(#landingBandFill)"
+                      activeDot={false}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="expLow"
+                      stroke="none"
+                      fill="#0d1d19"
+                      activeDot={false}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="expMid"
+                      stroke="var(--teal-br)"
+                      strokeWidth={1}
+                      strokeDasharray="3 3"
+                      dot={false}
+                      opacity={0.4}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="measured"
+                      name="On Track"
+                      stroke="var(--teal-br)"
+                      strokeWidth={3}
+                      dot={{ r: 3.5, fill: "#0d1d19", stroke: "var(--teal-br)", strokeWidth: 2 }}
+                      activeDot={{ r: 5 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="drifting"
+                      name="Drifting"
+                      stroke="var(--orange-br)"
+                      strokeWidth={2.5}
+                      strokeDasharray="2 6"
+                      dot={{ r: 3.5, fill: "#0d1d19", stroke: "var(--orange-br)", strokeWidth: 1.5 }}
+                      activeDot={{ r: 5 }}
+                    />
+                    <Tooltip
+                      cursor={{ stroke: "rgba(255,255,255,0.15)", strokeDasharray: "3 3" }}
+                      contentStyle={{
+                        borderRadius: 12,
+                        background: "#0d1d19",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        boxShadow: "0 12px 36px rgba(0,0,0,0.5)",
+                        fontFamily: "IBM Plex Sans",
+                        fontSize: 12,
+                        color: "#fff",
+                      }}
+                      labelFormatter={(w) => `Week ${w} post onset`}
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="clegend" style={{ flex: "none", marginTop: 8 }}>
                 <span>
                   <i style={{ background: "var(--teal-br)" }} /> On track
                 </span>
@@ -612,7 +766,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
                   <i style={{ background: "var(--orange-br)" }} /> Drifting below band
                 </span>
                 <span>
-                  <i style={{ background: "rgba(32,196,176,0.3)" }} /> Expected band
+                  <i style={{ background: "rgba(32,196,176,0.2)" }} /> Expected range
                 </span>
               </div>
             </div>
@@ -623,12 +777,12 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       {/* ============ TRUST ============ */}
       <section className="sec trust" id="trust">
         <div className="wrap">
-          <div className="sec-head rv">
+          <div className="sec-head rv rv-fade">
             <span className="bracket">privacy</span>
             <h2 className="sec-h">Private by design.</h2>
           </div>
           <div className="trust-grid">
-            <div className="tcard rv">
+            <div className="tcard rv rv-slide-up">
               <svg className="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ width: "40px", height: "40px", color: "var(--teal)", marginBottom: "18px" }}>
                 <rect x="4" y="10" width="16" height="11" rx="2.5" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" />
@@ -636,7 +790,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <b>One care relationship</b>
               <p>Encrypted pairing binds one therapist to their caseload. Nothing is shared more widely.</p>
             </div>
-            <div className="tcard rv rv-d1">
+            <div className="tcard rv rv-slide-up rv-d1">
               <svg className="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ width: "40px", height: "40px", color: "var(--teal)", marginBottom: "18px" }}>
                 <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
                 <path d="M9 12l2 2 4-4" />
@@ -644,7 +798,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <b>The data is theirs</b>
               <p>Recovery data belongs to the patient and their care team, and travels nowhere else.</p>
             </div>
-            <div className="tcard rv rv-d2">
+            <div className="tcard rv rv-slide-up rv-d2">
               <svg className="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ width: "40px", height: "40px", color: "var(--teal)", marginBottom: "18px" }}>
                 <path d="M12 3a9 9 0 1 0 9 9" />
                 <path d="M21 5l-9 9-3-3" />
@@ -670,14 +824,14 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
           </svg>
         </div>
         <div className="cta-inner">
-          <div className="rv">
+          <div className="rv rv-slide-up">
             <h2>
               Be first to help them <em className="tealword">reach</em> further.
             </h2>
             <p>For clinics and survivors. Tell us where to send your early invite.</p>
           </div>
           {!submitted ? (
-            <form className="waitlist rv rv-d1" id="waitform" onSubmit={handleWaitlistSubmit}>
+            <form className="waitlist rv rv-slide-up rv-d1" id="waitform" onSubmit={handleWaitlistSubmit}>
               <input
                 type="email"
                 placeholder="you@clinic.org"
