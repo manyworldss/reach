@@ -498,9 +498,9 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div className="bento-card bento-wide rv rv-zoom rv-d4">
               <div className="bento-content">
                 <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M12 12v8M9 16h6" strokeWidth="2" />
-                  <path d="M12 20l-3-3M12 20l3-3" />
+                  <circle cx="12" cy="8" r="3" />
+                  <path d="M6 18c0-3 2.5-4 6-4s6 1 6 4" />
+                  <path d="M8 18h6" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" />
                 </svg>
                 <h3>Anti-subluxation &amp; shoulder protection</h3>
                 <p>Protecting the shoulder while strength returns during recovery stages.</p>
@@ -508,12 +508,11 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               </div>
               <div className="bento-shoulder-visual">
                 <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <circle cx="50" cy="50" r="40" strokeDasharray="3 3" className="sh-ring" />
-                  <path d="M35 30 C 45 35, 55 35, 65 30" strokeWidth="2" strokeLinecap="round" className="sh-joint" />
-                  <circle cx="50" cy="48" r="10" fill="rgba(12, 125, 114, 0.08)" stroke="var(--teal)" strokeWidth="1.5" className="sh-head" />
-                  <path d="M50 58 L50 85" strokeWidth="2.5" strokeLinecap="round" className="sh-bone" />
-                  <path d="M30 65 C 40 75, 60 75, 70 65" stroke="var(--orange)" strokeWidth="2" strokeDasharray="2 2" strokeLinecap="round" className="sh-cradle" />
-                  <path d="M50 78 L50 68 M47 72 L50 68 L53 72" stroke="var(--orange)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sh-arrow" />
+                  <path d="M25 50 C 25 42, 32 38, 40 38 L 60 38 C 68 38, 75 42, 75 50" strokeWidth="2" strokeLinecap="round" className="body-torso" />
+                  <circle cx="50" cy="24" r="9" strokeWidth="2" className="body-head" fill="rgba(20, 32, 27, 0.03)" />
+                  <path d="M68 38 L68 56 L45 56" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="body-arm" />
+                  <path d="M40 38 L65 56" stroke="var(--orange)" strokeWidth="2.5" strokeLinecap="round" className="sling-strap" />
+                  <path d="M42 51 L70 51 C 73 51, 73 61, 70 61 L42 61 C 39 61, 39 51, 42 51 Z" fill="rgba(226, 79, 28, 0.08)" stroke="var(--orange)" strokeWidth="1.5" className="sling-pouch" />
                 </svg>
               </div>
             </div>

@@ -1028,24 +1028,23 @@
   transform: scale(1.08) translateY(-4px);
 }
 
-/* Animations for shoulder protection */
-.reach-landing .bento-shoulder-visual .sh-cradle {
-  animation: sh-pulse-cradle 3s ease-in-out infinite;
+/* Animations for shoulder support figure */
+.reach-landing .bento-shoulder-visual .sling-pouch {
+  animation: sh-float 3.5s ease-in-out infinite;
   transform-origin: center;
 }
-.reach-landing .bento-shoulder-visual .sh-arrow {
-  animation: sh-slide-arrow 1.8s ease-in-out infinite;
-  transform-origin: center;
+.reach-landing .bento-shoulder-visual .sling-strap {
+  stroke-dasharray: 6 6;
+  animation: sh-strap-flow 1.5s linear infinite;
 }
 
-@keyframes sh-pulse-cradle {
-  0%, 100% { opacity: 0.7; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(2px); }
+@keyframes sh-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5px); }
 }
-@keyframes sh-slide-arrow {
-  0% { transform: translateY(3px); opacity: 0.2; }
-  50% { transform: translateY(-3px); opacity: 1; }
-  100% { transform: translateY(3px); opacity: 0.2; }
+@keyframes sh-strap-flow {
+  from { stroke-dashoffset: 12; }
+  to { stroke-dashoffset: 0; }
 }
 
 /* ============ patient app ============ */
