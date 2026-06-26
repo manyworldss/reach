@@ -498,9 +498,8 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
             <div className="bento-card bento-wide rv rv-zoom rv-d4">
               <div className="bento-content">
                 <svg className="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="8" r="3" />
-                  <path d="M6 18c0-3 2.5-4 6-4s6 1 6 4" />
-                  <path d="M8 18h6" stroke="var(--orange)" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M12 8v8M9 12h6" />
                 </svg>
                 <h3>Anti-subluxation &amp; shoulder protection</h3>
                 <p>Protecting the shoulder while strength returns during recovery stages.</p>
