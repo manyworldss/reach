@@ -370,7 +370,8 @@
 .reach-landing .ln {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.04em;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.14em;
 }
 
 .reach-landing .ln-i {
