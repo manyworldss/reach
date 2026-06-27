@@ -165,7 +165,7 @@ function App() {
   ) : (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: colBg }}>
       <StatusBar platform={platform} dark={statusDark} />
-      {interior}
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>{interior}</div>
     </div>
   );
 

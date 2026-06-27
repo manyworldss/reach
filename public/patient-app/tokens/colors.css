@@ -9,9 +9,9 @@
 
 :root {
   /* --- Surfaces & canvas --- */
-  --canvas:        #eef1f0; /* App background, cool and calm, never pure white */
+  --canvas:        #f7f5f0; /* App background, warm and calm, never pure white */
   --surface:       #ffffff; /* Cards and panels */
-  --surface-2:     #f8faf9; /* Inset and secondary surfaces */
+  --surface-2:     #fbfaf7; /* Inset and secondary surfaces */
 
   /* --- Ink / text (deepened for more contrast / modern punch) --- */
   --ink:           #0f1b17; /* Primary text, a deep pine near-black */

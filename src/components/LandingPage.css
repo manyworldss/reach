@@ -1094,20 +1094,23 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  padding: 24px 20px 0;
+  align-items: center;
+  padding: 28px 24px;
   border-radius: 30px;
   background:
-    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.13), transparent 72%),
-    linear-gradient(165deg, #f5efe3 0%, #ece4d4 100%);
-  border: 1px solid var(--line-soft);
-  box-shadow: 0 30px 64px -36px rgba(20, 32, 27, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.1), transparent 72%),
+    var(--paper);
+  border: 1px solid var(--ink-warm);
+  box-shadow: 0 30px 64px -36px rgba(20, 32, 27, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), background 0.45s var(--ease);
 }
 
 .reach-landing .pa-phone-wrap:hover {
   transform: translateY(-4px);
-  box-shadow: 0 38px 72px -36px rgba(20, 32, 27, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  box-shadow: 0 38px 72px -36px rgba(20, 32, 27, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background:
+    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.14), transparent 72%),
+    #ffffff;
 }
 
 /* Soft contact shadow so the phone is seated on the pedestal, not floating */
@@ -1115,7 +1118,7 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 14px;
+  bottom: 30px;
   width: 60%;
   height: 26px;
   transform: translateX(-50%);
