@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* --- Surfaces & canvas (subtly slate-blue tinted) --- */
-  --canvas:        #edf1f5; /* App background, cool, calm slate-grey, never pure white */
+  /* --- Surfaces & canvas (warm parchment, matched to the landing page) --- */
+  --canvas:        #f7f3ec; /* Parchment app background, the landing-page canvas */
   --surface:       #ffffff; /* Cards and panels */
-  --surface-2:     #f5f8fa; /* Inset and secondary surfaces */
+  --surface-2:     #f3ede1; /* Warm inset and secondary surfaces */
 
-  /* --- Ink / text (premium slate-navy for high readability) --- */
-  --ink:           #0f172a; /* Primary text (slate-900) */
-  --ink-soft:      #334155; /* Secondary text (slate-700) */
-  --muted:         #64748b; /* Captions, labels (slate-500) */
+  /* --- Ink / text (deep pine, the landing-page structural color) --- */
+  --ink:           #14201b; /* Primary text (pine near-black) */
+  --ink-soft:      #39473f; /* Secondary text (warm pine-grey) */
+  --muted:         #6f675b; /* Captions, labels (warm taupe) */
 
   /* --- Lines --- */
-  --line:          #e1e6eb; /* Soft slate-blue borders */
+  --line:          #e6ddcc; /* Warm parchment hairline borders */
 
   /* --- Accent: petrol teal (recovery + primary action) --- */
   --accent:        #0c7d72; /* Petrol teal, enriched a touch for more conviction */
@@ -39,9 +39,9 @@
   --lilac:         #ece9f6;
   --lilac-ink:     #5b4b8a;
 
-  /* --- Elevation (theme-aware) --- */
-  --shadow-card:   0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
-  --shadow-lift:   0 4px 16px rgba(15, 23, 42, 0.08);
+  /* --- Elevation (theme-aware, warm pine-tinted on parchment) --- */
+  --shadow-card:   0 1px 2px rgba(20, 32, 27, 0.05), 0 1px 3px rgba(20, 32, 27, 0.04);
+  --shadow-lift:   0 8px 30px -12px rgba(20, 32, 27, 0.22);
 
   /* --- Type families (mapped to the fonts loaded in index.html) --- */
   --font-ui:       "IBM Plex Sans", system-ui, -apple-system, sans-serif;
@@ -57,18 +57,21 @@
 }
 
 html.dark, .theme-dark {
-  /* Premium Obsidian Slate-Navy palette — deep, rich, high-contrast, layered for depth */
+  /* Premium Obsidian Slate-Navy palette — deep, rich, high-contrast, layered for depth.
+     Cards earn separation from real elevation (lighter fill + drop shadow), not from a
+     visible outline, so panels read as raised surfaces rather than outlined boxes. */
   --canvas:        #080c14; /* Deepest midnight navy-black canvas */
-  --surface:       #0f172a; /* Raised card surface (slate-900) */
-  --surface-2:     #1e293b; /* Inset / secondary surface (slate-800) */
+  --surface:       #111d33; /* Raised card surface, lifted clear of the canvas */
+  --surface-2:     #1b2740; /* Inset / secondary surface */
 
   /* Ink / text */
   --ink:           #f8fafc; /* Primary text (slate-50) */
   --ink-soft:      #cbd5e1; /* Secondary text (slate-300) */
   --muted:         #64748b; /* Muted captions/labels (slate-500) */
 
-  /* Subtle color-themed borders — completely avoids flat white borders */
-  --line:          rgba(56, 189, 248, 0.08); /* Translucent sky-blue/teal hairline glow */
+  /* Near-invisible neutral hairline: enough to separate stacked rows and dividers,
+     but too faint to read as an outline around a card. No cool sky-blue tint. */
+  --line:          rgba(226, 232, 240, 0.05);
 
   /* Accent: petrol teal glow */
   --accent:        #2dd4bf; /* Vibrant teal-400 */
@@ -93,12 +96,13 @@ html.dark, .theme-dark {
   --lilac:         rgba(168, 85, 247, 0.08); /* Deep lilac purple backdrop */
   --lilac-ink:     #c084fc;                  /* Lilac text */
 
-  /* Premium elevation on dark: deep drops + very soft sky/indigo tint glows */
-  --shadow-card:   0 1px 0 rgba(255,255,255,0.02) inset,
-                   0 1px 3px rgba(0,0,0,0.5),
-                   0 4px 18px -3px rgba(0,0,0,0.5);
-  --shadow-lift:   0 1px 0 rgba(255,255,255,0.03) inset,
-                   0 16px 48px -12px rgba(0,0,0,0.8);
+  /* Premium elevation on dark: a faint top lip plus deep, soft drop shadows carry the
+     separation that the outline used to. This is what makes panels feel raised. */
+  --shadow-card:   0 1px 0 rgba(255,255,255,0.04) inset,
+                   0 2px 6px -1px rgba(0,0,0,0.55),
+                   0 10px 28px -8px rgba(0,0,0,0.6);
+  --shadow-lift:   0 1px 0 rgba(255,255,255,0.05) inset,
+                   0 20px 56px -14px rgba(0,0,0,0.85);
 }
 
 html,
@@ -113,6 +117,24 @@ body {
   color: var(--ink);
   font-family: "IBM Plex Sans", system-ui, sans-serif;
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Signature paper grain, carried over from the landing page so the app and the
+   home page share the same tactile parchment surface. Scoped to the app
+   shell (the landing page paints its own grain) and shown in light mode only. */
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+html.dark .app-shell::before {
+  display: none;
 }
 
 /* Multi-layered accent glow from the top edge in dark mode for ambient depth */

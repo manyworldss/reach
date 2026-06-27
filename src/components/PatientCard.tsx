@@ -21,11 +21,10 @@ export default function PatientCard({ patient, onOpen }: PatientCardProps) {
   const adherence = avgAdherence(patient);
 
   return (
-    <div className="group w-full rounded-[1.6rem] bg-black/[0.02] dark:bg-white/[0.02] p-1.5 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-lift">
-      <button
-        onClick={onOpen}
-        className="w-full rounded-[calc(1.6rem-0.375rem)] bg-surface p-5 text-left border border-line/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent flex flex-col justify-between h-full transition-colors"
-      >
+    <button
+      onClick={onOpen}
+      className="group w-full rounded-xl2 bg-surface p-5 text-left border border-line shadow-card flex flex-col justify-between h-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-lift hover:border-accent/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    >
         <div className="w-full">
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -88,7 +87,6 @@ export default function PatientCard({ patient, onOpen }: PatientCardProps) {
             <Icon name="arrowUpRight" size={12} />
           </span>
         </div>
-      </button>
-    </div>
+    </button>
   );
 }

@@ -1,0 +1,90 @@
+/* ============================================================
+   Reach — Color tokens
+   A pine-tinted, petrol-teal clinical palette with conviction.
+   Cool and calm on content surfaces; dramatic dark pine on
+   full-bleed heroes. Color means something; it never decorates.
+   Accent = recovery/primary actions. Signal = attention, a
+   vivid flame-orange that genuinely grabs the eye (not alarm red).
+   ============================================================ */
+
+:root {
+  /* --- Surfaces & canvas --- */
+  --canvas:        #eef1f0; /* App background, cool and calm, never pure white */
+  --surface:       #ffffff; /* Cards and panels */
+  --surface-2:     #f8faf9; /* Inset and secondary surfaces */
+
+  /* --- Ink / text (deepened for more contrast / modern punch) --- */
+  --ink:           #0f1b17; /* Primary text, a deep pine near-black */
+  --ink-soft:      #2f3e39; /* Secondary headings and emphasis */
+  --muted:         #5d6e6a; /* Captions, labels, secondary text */
+
+  /* --- Lines --- */
+  --line:          #e2e7e4; /* Borders and hairlines */
+
+  /* --- Accent: petrol teal (recovery + primary action) --- */
+  --accent:        #0c7d72; /* Petrol teal, enriched a touch for more conviction */
+  --accent-ink:    #0a544c; /* Pressed / high-emphasis accent */
+  --accent-soft:   #dcefec; /* Tint fill behind accent elements */
+  --accent-bright: #20c4b0; /* Brighter teal that glows on dark hero surfaces */
+  --band:          #cfe8e1; /* The expected-recovery band */
+
+  /* --- Signal: flame orange (attention — vivid, grabs the eye) --- */
+  --signal:        #e24f1c; /* Flame orange for attention, confident not muddy */
+  --signal-soft:   #fde6dc; /* Warmer peachy tint behind pills/backgrounds */
+  --signal-ink:    #b23a12; /* High-emphasis signal text */
+  --signal-bright: #ff6a3c; /* Signal glow on dark surfaces */
+
+  /* --- Dark surfaces (dramatic full-bleed heroes / sections) --- */
+  --ink-deep:      #0a1714; /* Near-black pine — deepest hero base */
+  --surface-dark:  #0d1d19; /* Dark pine surface */
+  --surface-dark-2:#0a3531; /* Deep teal panel on dark */
+  --line-dark:     rgba(255,255,255,0.12); /* Hairline on dark */
+  --text-on-dark:       #f3f7f5; /* Primary text on dark surfaces */
+  --text-on-dark-muted: #9fb3ad; /* Secondary text on dark surfaces */
+
+  /* --- Positive (on-track confirmation; derived from accent family) --- */
+  --positive:      #0c7d72;
+  --positive-soft: #dcefec;
+
+  /* --- Supporting tints (patient-app color variety; calm, never neon) --- */
+  --mint:        #e3f3ee; /* cool recovery mint surface */
+  --mint-ink:    #0a6157;
+  --apricot:     #ffe9d6; /* warm encouragement surface */
+  --apricot-ink: #b85a22;
+  --sky:         #e2eef4; /* calm cool surface */
+  --sky-ink:     #2b6079;
+  --lilac:       #ece9f6; /* gentle milestone surface */
+  --lilac-ink:   #5b4b8a;
+
+  /* --- Gradients (color-shift; use intentionally, never muddy) --- */
+  --gradient-teal:     linear-gradient(135deg, #0c7d72 0%, #20c4b0 100%); /* @kind color */
+  --gradient-recovery: linear-gradient(120deg, #20c4b0 0%, #0c7d72 60%, #0a544c 100%); /* @kind color */
+  --gradient-warm:     linear-gradient(120deg, #ff6a3c 0%, #e24f1c 60%, #b23a12 100%); /* @kind color */
+  --gradient-sunrise:  linear-gradient(110deg, #0c7d72 0%, #1aa597 38%, #ff6a3c 100%); /* @kind color */
+  --gradient-hero:     radial-gradient(60% 70% at 50% 12%, rgba(32,196,176,0.22), rgba(10,23,20,0) 70%); /* @kind color */
+  --gradient-band:     linear-gradient(180deg, rgba(32,196,176,0.16), rgba(32,196,176,0)); /* @kind color */
+
+  /* ============================================================
+     Semantic aliases — reference these in components
+     ============================================================ */
+  --bg-app:            var(--canvas);
+  --bg-surface:        var(--surface);
+  --bg-inset:          var(--surface-2);
+
+  --text-primary:      var(--ink);
+  --text-secondary:    var(--ink-soft);
+  --text-muted:        var(--muted);
+  --text-on-accent:    #ffffff;
+
+  --border-default:    var(--line);
+  --border-strong:     #cfd7d3;
+
+  --action:            var(--accent);
+  --action-hover:      #0a6f65;
+  --action-pressed:    var(--accent-ink);
+
+  --attention:         var(--signal);
+  --attention-bg:      var(--signal-soft);
+
+  --focus-ring:        color-mix(in srgb, var(--accent) 45%, transparent);
+}

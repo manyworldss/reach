@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import type { Patient } from "../types";
 import { MEASURES } from "../types";
-import { avgAdherence, formatDate, latest, previous, severityOf, STATUS_COPY, statusOf, statusReason } from "../lib/format";
+import { avgAdherence, formatDate, generateProgressNote, latest, previous, severityOf, STATUS_COPY, statusOf, statusReason } from "../lib/format";
 import { SEVERITY_BANDS, PATHWAYS } from "../data/protocols";
 import RecoveryChart from "./RecoveryChart";
 import LogAssessmentModal from "./LogAssessmentModal";
@@ -23,9 +23,10 @@ const SEVERITY_CHIP: Record<string, { chip: string; dot: string }> = {
 interface PatientDetailProps {
   patient: Patient;
   onBack: () => void;
+  onOpenPatientApp?: () => void;
 }
 
-export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
+export default function PatientDetail({ patient, onBack, onOpenPatientApp }: PatientDetailProps) {
   // Modal states
   const [isLogOpen, setIsLogOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -35,6 +36,9 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
 
   // Toast notification state
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  // Auto-generated progress note for the EMR (copy-to-clipboard state)
+  const [noteCopied, setNoteCopied] = useState(false);
 
   useEffect(() => {
     if (toastMsg) {
@@ -69,6 +73,21 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
 
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
+  };
+
+  // Progress note generated from this patient's live data, regenerated whenever
+  // their assessments, program, or pathways change.
+  const progressNote = useMemo(() => generateProgressNote(patient), [patient]);
+
+  const copyProgressNote = async () => {
+    try {
+      await navigator.clipboard.writeText(progressNote);
+      setNoteCopied(true);
+      triggerToast("Progress note copied to clipboard");
+      setTimeout(() => setNoteCopied(false), 2500);
+    } catch {
+      setNoteCopied(false);
+    }
   };
 
   // Treatment ideas recommendations based on clinical recovery status and phase
@@ -474,6 +493,7 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
 
       {/* Tab: Treatment Ideas & Education Resources (Specific User Request!) */}
       {activeTab === "treatment" && (
+        <div className="flex flex-col gap-6">
         <div className="grid gap-6 md:grid-cols-5">
           {/* Clinician Portal: Treatment Ideas */}
           <div className="md:col-span-3 space-y-4">
@@ -553,16 +573,46 @@ export default function PatientDetail({ patient, onBack }: PatientDetailProps) {
                       
                       <p className="text-[11px] text-muted mt-2.5 leading-relaxed">{res.description}</p>
                       
-                      <div className="mt-3.5 border-t border-line/40 pt-2.5 flex items-center justify-between text-[10px] font-bold text-accent cursor-pointer hover:text-accentink">
-                        <span>Send guide to Patient App</span>
+                      <button
+                        onClick={onOpenPatientApp}
+                        className="mt-3.5 w-full border-t border-line/40 pt-2.5 flex items-center justify-between text-[10px] font-bold text-accent cursor-pointer hover:text-accentink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                      >
+                        <span>Open patient app</span>
                         <Icon name="arrowUpRight" size={10} />
-                      </div>
+                      </button>
                     </div>
                   );
                 })}
               </div>
             </section>
           </div>
+        </div>
+
+        {/* Auto-generated EMR progress note, built from this patient's live data */}
+        <section className="rounded-xl2 border border-line bg-surface p-6 shadow-card">
+          <div className="flex items-center justify-between gap-3 mb-4 border-b border-line pb-3">
+            <div className="flex items-center gap-2">
+              <Icon name="copy" size={18} className="text-accent" duotone />
+              <div>
+                <h3 className="font-display text-lg font-bold text-ink">Auto-Generated Progress Note</h3>
+                <p className="text-xs text-muted mt-0.5">
+                  Built from {patient.name.split(" ")[0]}&rsquo;s current scores, severity band, adherence, and active pathways.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={copyProgressNote}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-inksoft transition-all hover:bg-surface2 active:scale-[0.98] shrink-0"
+            >
+              <Icon name={noteCopied ? "check" : "copy"} size={13} className={noteCopied ? "text-accent" : ""} />
+              {noteCopied ? "Copied" : "Copy to EMR"}
+            </button>
+          </div>
+          <p className="text-xs text-inksoft leading-relaxed whitespace-pre-line">{progressNote}</p>
+          <p className="mt-4 border-t border-line pt-3 text-[10px] italic text-muted leading-relaxed">
+            Generated draft for charting. A licensed therapist reviews and signs the final note.
+          </p>
+        </section>
         </div>
       )}
 

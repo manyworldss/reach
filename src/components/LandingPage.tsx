@@ -132,11 +132,6 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
 
   return (
     <div className="reach-landing">
-      {/* ============ ANNOUNCEMENT STRIP ============ */}
-      <div className="annc">
-        Clinicians: help shape the future of stroke rehab. <a href="#join">Take the 2 minute survey &rarr;</a>
-      </div>
-
       {/* ============ FLOATING PILL NAV ============ */}
       <header className={`topstrip ${isShrunk ? "shrink" : ""}`} id="topstrip">
         <nav className="navpill">
@@ -525,54 +520,19 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       <section className="sec" id="app">
         <div className="wrap">
           <div className="split">
-            <div className="rv rv-slide-up" style={{ display: "flex", justifyContent: "center" }}>
-              <div className="phone" data-parallax="-0.05">
-                <div className="notch" />
-                <div className="screen">
-                  <div className="pa-hero">
-                    <div className="lab">TODAY · EVERYDAY MOVEMENTS</div>
-                    <div className="big">2 / 4</div>
-                    <div className="sm">tasks done, no rush</div>
-                    <div className="pa-bar">
-                      <i />
-                    </div>
-                  </div>
-                  <div className="pa-body">
-                    <div className="pa-task">
-                      <div className="t-ic" style={{ background: "var(--mint)", color: "var(--mint-ink)" }}>
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M5 12.5l4.5 4.5L19 7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <b>Daily check-in</b>
-                        <span>Energy, pain, focus</span>
-                      </div>
-                    </div>
-                    <div className="pa-task">
-                      <div className="t-ic" style={{ background: "var(--sky)", color: "var(--sky-ink)" }}>
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M7 11V7a2 2 0 0 1 4 0M11 11V6a2 2 0 0 1 4 0v6c0 3-2 5-5 5s-4-1.5-5-3" />
-                        </svg>
-                      </div>
-                      <div>
-                        <b>Lift a cup to your mouth</b>
-                        <span>Daily living · 10 reps</span>
-                      </div>
-                    </div>
-                    <div className="pa-task">
-                      <div className="t-ic" style={{ background: "var(--apricot)", color: "var(--apricot-ink)" }}>
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 7h16M4 12h10M4 17h7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <b>Type a short message</b>
-                        <span>Fine motor · 2 minutes</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Live, interactive patient-app prototype (tap Get started to walk the flow) */}
+            <div className="rv rv-slide-up pa-stage">
+              <span className="pa-badge">
+                <span className="dot" />
+                Interactive demo · tap to try
+              </span>
+              <div className="pa-phone-wrap">
+                <iframe
+                  className="pa-embed"
+                  src="/patient-app/index.html"
+                  title="Reach patient app, interactive prototype"
+                  loading="lazy"
+                />
               </div>
             </div>
 

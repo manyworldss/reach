@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reach Patient App Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens/colors.css">
+<link rel="stylesheet" href="tokens/typography.css">
+<link rel="stylesheet" href="tokens/spacing.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  /* Transparent stage so the phone sits cleanly on whatever frames the demo
+     (the parchment home page, or the in-tool demo view). */
+  body { font-family: var(--font-ui); background: transparent;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #stage { position: relative; transform-origin: center center; display: flex; flex-direction: column; align-items: center; }
+  * { scrollbar-width: none; -ms-overflow-style: none; }
+  *::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none; }
+  .reach-rm *, .reach-rm *::before, .reach-rm *::after { animation: none !important; transition: none !important; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="proto/data.jsx"></script>
+<script type="text/babel" src="proto/shell.jsx"></script>
+<script type="text/babel" src="proto/screens-flow.jsx"></script>
+<script type="text/babel" src="proto/screens-tabs.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const ACCENTS = {
+  teal:  { base: '#0c7d72', ink: '#0a544c', bright: '#20c4b0' },
+  pine:  { base: '#0a6157', ink: '#074a42', bright: '#1aa597' },
+  ocean: { base: '#2b6079', ink: '#1d4356', bright: '#4d95b8' },
+};
+
+// Fixed product decisions for the demo (the handoff's Tweaks panel and Restart
+// bar are prototype-only scaffolding and are intentionally not shipped here):
+//   accent = teal (matches the Reach brand + clinician tool)
+//   nav    = floating (the centered dark pill, per the design reference)
+const SETTINGS_DEFAULTS = {
+  platform: 'ios',
+  nav: 'floating',
+  accent: 'teal',
+  textScale: 1,
+  playerTheme: 'light',
+  playerLayout: 'focus',
+  difficultyStyle: 'pills',
+  todayLayout: 'streak',
+  progressView: 'ladder',
+  plainLanguage: false,
+  reducedMotion: false,
+};
+
+// Minimal replacement for the prototype's useTweaks: keeps the real in-app
+// accessibility settings (text size, plain language, reduced motion, dark
+// player) working from the Profile screen, without the design Tweaks panel.
+function useSettings(defaults) {
+  const [s, setS] = useState(defaults);
+  const set = useCallback((k, v) => setS((prev) => ({ ...prev, [k]: v })), []);
+  return [s, set];
+}
+
+function App() {
+  const [t, setTweak] = useSettings(SETTINGS_DEFAULTS);
+  const [phase, setPhase] = useState('splash');      // splash | pairing | app
+  const [tab, setTab] = useState('today');
+  const [overlay, setOverlay] = useState(null);       // null | 'checkin' | 'player' | 'reminders' | 'education'
+  const [doneCount, setDoneCount] = useState(0);
+  const [checkinDone, setCheckinDone] = useState(false);
+  const [unread, setUnread] = useState(2);
+
+  const accent = ACCENTS[t.accent] || ACCENTS.teal;
+  const sysRM = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rm = t.reducedMotion || sysRM;
+  const platform = t.platform;
+  const playerDark = t.playerTheme === 'dark';
+
+  // Scale the device to fit the iframe viewport.
+  const stageRef = useRef(null);
+  useEffect(() => {
+    const fit = () => {
+      const el = stageRef.current; if (!el) return;
+      el.style.transform = 'scale(1)';
+      const need = el.scrollHeight, needW = 374;
+      const s = Math.min(1, (window.innerHeight - 2) / need, (window.innerWidth - 2) / needW);
+      el.style.transform = `scale(${s})`;
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    const id = setInterval(fit, 400);
+    return () => { window.removeEventListener('resize', fit); clearInterval(id); };
+  }, []);
+
+  const startSession = () => { setTab('today'); setOverlay('player'); };
+  const goCheckin = () => { setTab('today'); setOverlay('checkin'); };
+  const finishCheckin = () => { setCheckinDone(true); setOverlay('player'); };
+  const finishSession = () => { setDoneCount(window.ReachPatientData.TODAY.length); setOverlay(null); setTab('progress'); };
+  const goReminders = () => { setUnread(0); setOverlay('reminders'); };
+  const goEducation = () => { setOverlay('education'); };
+  const reminderStart = () => { setOverlay(checkinDone ? 'player' : 'checkin'); };
+
+  // ---- interior screen ----
+  let interior, statusDark = false, gestureDark = false, colBg = 'var(--canvas)', fullBleed = false;
+
+  if (phase === 'splash') {
+    fullBleed = true; statusDark = true; gestureDark = true;
+    interior = <Splash onStart={() => setPhase('pairing')} />;
+  } else if (phase === 'pairing') {
+    colBg = 'var(--surface)';
+    interior = <Pairing onPaired={() => setPhase('app')} />;
+  } else if (overlay === 'checkin') {
+    colBg = 'var(--surface)';
+    interior = <div style={{ flex: 1, minHeight: 0 }}><CheckIn onDone={finishCheckin} onClose={() => setOverlay(null)} /></div>;
+  } else if (overlay === 'player') {
+    colBg = playerDark ? 'var(--ink-deep)' : 'var(--surface)';
+    statusDark = playerDark; gestureDark = playerDark;
+    interior = (
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <Player startIdx={doneCount >= window.ReachPatientData.TODAY.length ? 0 : doneCount}
+          onClose={() => setOverlay(null)} onComplete={finishSession}
+          theme={t.playerTheme} difficultyStyle={t.difficultyStyle} layout={t.playerLayout} showClinical={!t.plainLanguage} />
+      </div>
+    );
+  } else if (overlay === 'reminders') {
+    colBg = 'var(--surface)';
+    interior = <div style={{ flex: 1, minHeight: 0 }}><Reminders onStartSession={reminderStart} onClose={() => setOverlay(null)} /></div>;
+  } else if (overlay === 'education') {
+    colBg = 'var(--surface)';
+    interior = <div style={{ flex: 1, minHeight: 0 }}><Education onClose={() => setOverlay(null)} /></div>;
+  } else {
+    const body =
+      tab === 'today' ? <Today onStart={startSession} onCheckin={goCheckin} onEducation={goEducation} layout={t.todayLayout} doneCount={doneCount} checkinDone={checkinDone} showClinical={!t.plainLanguage} /> :
+      tab === 'progress' ? <Progress view={t.progressView} /> :
+      tab === 'messages' ? <Messages /> :
+      <Profile settings={{ textScale: t.textScale, reducedMotion: t.reducedMotion, playerTheme: t.playerTheme, plainLanguage: t.plainLanguage }}
+        onSetting={(k, v) => setTweak(k, v)} onEducation={goEducation} />;
+    const noScrollPad = tab === 'messages';
+    interior = (
+      <React.Fragment>
+        <TopBar unread={unread} onBell={goReminders} />
+        <div style={{ flex: 1, minHeight: 0, overflow: noScrollPad ? 'hidden' : 'auto', display: noScrollPad ? 'flex' : 'block', flexDirection: 'column' }}>{body}</div>
+        {t.nav === 'floating'
+          ? <FloatingNav tab={tab} onTab={setTab} platform={platform} />
+          : <TabBar tab={tab} onTab={setTab} platform={platform} />}
+      </React.Fragment>
+    );
+  }
+
+  const frameInner = fullBleed ? (
+    <React.Fragment>
+      <div style={{ position: 'absolute', inset: 0 }}>{interior}</div>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 30 }}><StatusBar platform={platform} dark={statusDark} /></div>
+    </React.Fragment>
+  ) : (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: colBg }}>
+      <StatusBar platform={platform} dark={statusDark} />
+      {interior}
+    </div>
+  );
+
+  return (
+    <ScaleCtx.Provider value={t.textScale}>
+      <div id="stage" ref={stageRef}>
+        <PhoneFrame platform={platform} accent={accent} rm={rm}>
+          {frameInner}
+          <NavGesture platform={platform} dark={gestureDark} />
+        </PhoneFrame>
+      </div>
+    </ScaleCtx.Provider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

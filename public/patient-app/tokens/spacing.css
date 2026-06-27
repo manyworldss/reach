@@ -1,0 +1,58 @@
+/* ============================================================
+   Reach — Spacing, radius, shadow, motion tokens (LOCKED)
+   An 8px base scale. Generous card padding (20–24px). Near-
+   invisible resting shadow on cards, soft lift on hover.
+   Radius: cards 18px, buttons/inputs 8px, pills full.
+   Motion is restrained; reduced motion always respected.
+   ============================================================ */
+
+:root {
+  /* --- Spacing (8px base) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Card padding sits at 20–24px */
+  --pad-card: 22px;
+  --pad-card-sm: 16px;
+
+  /* --- Radius --- */
+  --radius-card: 18px;
+  --radius-control: 8px;   /* buttons + inputs */
+  --radius-pill: 999px;
+  --radius-sm: 6px;
+
+  /* --- Borders --- */
+  --border-hairline: 1px solid var(--border-default);
+
+  /* --- Shadow: near-invisible at rest, soft lift on hover --- */
+  --shadow-rest:  0 1px 2px rgba(21, 35, 31, 0.04), 0 0 0 1px rgba(21, 35, 31, 0.015);
+  --shadow-hover: 0 6px 20px -6px rgba(21, 35, 31, 0.14), 0 2px 6px rgba(21, 35, 31, 0.05);
+  --shadow-pop:   0 18px 48px -12px rgba(21, 35, 31, 0.22);
+
+  /* --- Motion (restrained) --- */
+  --ease-quiet: cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur: 200ms; /* @kind other */
+  --dur-slow: 320ms; /* @kind other */
+  --chart-draw: 720ms; /* @kind other */
+
+  /* --- Touch (patient app) --- */
+  --touch-min: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms; /* @kind other */
+    --dur: 0ms; /* @kind other */
+    --dur-slow: 0ms; /* @kind other */
+    --chart-draw: 0ms; /* @kind other */
+  }
+}

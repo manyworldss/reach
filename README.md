@@ -48,13 +48,13 @@ The application has been reshaped around these clinical requirements:
     *   *Left Neglect and Visual-Spatial* (Moderate and Severe): Visual scanning, anchoring, and midline crossing.
     *   *Anti-Subluxation and Shoulder Protection* (Severe): Scapular stability, supported range of motion, and positioning.
 *   **Repetition and Adherence Auditing**: Tracks compliance metrics. Identifies when adherence drops below 60 percent as an early warning of a stalled home program.
-*   **Clinical Copy-and-Paste Documentation**: High-quality progress notes are automatically generated for each selected pathway, ready to copy directly into the clinic's Electronic Medical Record (EMR).
+*   **Clinical Copy-and-Paste Documentation**: A progress note is generated from each patient's live data (demographics, latest standardized scores and their change since the prior assessment, severity band, home program adherence, and the intervention language for every active pathway), ready to copy in one click into the clinic's Electronic Medical Record (EMR).
 *   **Subjective Patient Feedback Concept**: Conceptual designs for patients to report daily pain, energy, and perceived arm use.
 *   **Bidirectional Video and Messaging Concept**: Interactive message and video verification loops to allow asynchronous movement analysis.
 
 ## Editorial Landing Page Design System
 
-The marketing landing page uses a warm, editorial style to contrast with typical sterile software designs. It matches the visual aesthetics of high-end print journals.
+The home page uses a warm, editorial style to contrast with typical sterile software designs. It matches the visual aesthetics of high-end print journals. The clinician tool shares this same parchment-and-pine system so the two never feel like separate products.
 
 *   **Color Palette**: A warm parchment background (`#f7f3ec`) paired with deep pine ink (`#14201b`) for typography and borders. Petrol-teal (`#0c7d72`) represents recovery and progress, while flame-orange (`#cb350f`) highlights attention and alerts.
 *   **Typography**: Fraunces (a serif typeface with editorial warmth) for display headlines. IBM Plex Sans for clean interface controls. IBM Plex Mono for clinical readings and tabular figures.

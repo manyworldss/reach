@@ -5,6 +5,7 @@ import PatientDetail from "./components/PatientDetail";
 import OutcomesView from "./components/OutcomesView";
 import ProgramsView from "./components/ProgramsView";
 import EducationView from "./components/EducationView";
+import PatientAppDemo from "./components/PatientAppDemo";
 import LandingPage from "./components/LandingPage";
 import { PatientsProvider, usePatients } from "./context/PatientsContext";
 
@@ -20,9 +21,20 @@ function MainAppContent() {
     return <LandingPage onLaunchApp={() => setCurrentView("caseload")} />;
   }
 
+  const openPatientApp = () => {
+    setSelectedId(null);
+    setCurrentView("patientapp");
+  };
+
   const renderContent = () => {
     if (selected) {
-      return <PatientDetail patient={selected} onBack={() => setSelectedId(null)} />;
+      return (
+        <PatientDetail
+          patient={selected}
+          onBack={() => setSelectedId(null)}
+          onOpenPatientApp={openPatientApp}
+        />
+      );
     }
 
     switch (currentView) {
@@ -32,6 +44,8 @@ function MainAppContent() {
         return <ProgramsView onOpenPatient={setSelectedId} />;
       case "education":
         return <EducationView />;
+      case "patientapp":
+        return <PatientAppDemo onBack={() => setCurrentView("caseload")} />;
       case "caseload":
       default:
         return <Dashboard onOpen={setSelectedId} />;
@@ -39,7 +53,7 @@ function MainAppContent() {
   };
 
   return (
-    <div className="flex min-h-screen bg-canvas text-ink transition-colors duration-300">
+    <div className="app-shell relative flex min-h-screen bg-canvas text-ink transition-colors duration-300">
       <Sidebar
         currentView={selected ? "caseload" : currentView}
         onViewChange={(v) => {

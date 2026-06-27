@@ -1086,57 +1086,64 @@
   50% { opacity: 0.55; transform: scale(0.7); box-shadow: 0 0 0 5px rgba(12, 125, 114, 0); }
 }
 
+/* A deliberate device-pedestal card (in the same family as the other cards on
+   the page) so the phone sits on one intentional, uniform surface. The
+   transparent iframe then shows this card, not a mismatched slice of parchment,
+   so there is no stray rectangle. A soft teal spotlight sits behind the device. */
 .reach-landing .pa-phone-wrap {
   position: relative;
   display: flex;
   justify-content: center;
-  transition: transform 0.45s var(--ease);
+  align-items: flex-end;
+  padding: 24px 20px 0;
+  border-radius: 30px;
+  background:
+    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.13), transparent 72%),
+    linear-gradient(165deg, #f5efe3 0%, #ece4d4 100%);
+  border: 1px solid var(--line-soft);
+  box-shadow: 0 30px 64px -36px rgba(20, 32, 27, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
 }
 
 .reach-landing .pa-phone-wrap:hover {
   transform: translateY(-4px);
+  box-shadow: 0 38px 72px -36px rgba(20, 32, 27, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
-/* Teal halo that bridges the dark device and the warm parchment */
-.reach-landing .pa-phone-wrap::before {
-  content: "";
-  position: absolute;
-  inset: -10% -16%;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(58% 52% at 50% 40%, rgba(12, 125, 114, 0.20), transparent 70%);
-  filter: blur(10px);
-}
-
-/* Soft ground shadow so the phone is seated, not floating */
+/* Soft contact shadow so the phone is seated on the pedestal, not floating */
 .reach-landing .pa-phone-wrap::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 1%;
-  width: 64%;
-  height: 30px;
+  bottom: 14px;
+  width: 60%;
+  height: 26px;
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(20, 32, 27, 0.30), transparent 75%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(20, 32, 27, 0.26), transparent 75%);
   filter: blur(7px);
 }
 
 .reach-landing .pa-embed {
   position: relative;
   z-index: 1;
+  /* Sized to the device aspect ratio (372 x 786) so the iframe hugs the phone
+     and leaves no surrounding panel to read as a different background. */
   width: 340px;
-  height: 712px;
+  height: 720px;
   border: 0;
   background: transparent;
-  color-scheme: light;
+  /* color-scheme:normal keeps the iframe backdrop transparent. With
+     color-scheme:light the browser paints an opaque light canvas behind the
+     transparent phone, which reads as a cool rectangle on the warm parchment. */
+  color-scheme: normal;
 }
 
 @media (max-width: 480px) {
   .reach-landing .pa-embed {
     width: 300px;
-    height: 640px;
+    height: 636px;
   }
 }
 

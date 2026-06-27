@@ -1,0 +1,116 @@
+/* ============================================================
+   Reach — Typography tokens (LOCKED)
+   Three roles: a humane editorial serif for display, a precise
+   clinical sans for UI/body, and a monospace instrument readout
+   with tabular figures for every clinical score, delta, and date.
+   ============================================================ */
+
+:root {
+  /* --- Families --- */
+  --font-display: 'Fraunces', 'Times New Roman', serif;          /* the human layer */
+  --font-ui:      'IBM Plex Sans', system-ui, -apple-system, sans-serif; /* workhorse */
+  --font-data:    'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;   /* readout */
+
+  /* --- Weights --- */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-bold:    700;
+
+  /* --- Type scale (size / line-height / tracking) --- */
+  /* Page title — Fraunces 34/500 */
+  --type-page-size: 34px;
+  --type-page-lh: 1.15;
+  --type-page-weight: 500;
+
+  /* Section title — Fraunces 22/500 */
+  --type-section-size: 22px;
+  --type-section-lh: 1.25;
+  --type-section-weight: 500;
+
+  /* Card title — Fraunces 18/500 */
+  --type-card-size: 18px;
+  --type-card-lh: 1.3;
+  --type-card-weight: 500;
+
+  /* Body — Plex Sans 14/400 */
+  --type-body-size: 14px;
+  --type-body-lh: 1.55;
+  --type-body-weight: 400;
+
+  /* Small body */
+  --type-body-sm-size: 13px;
+  --type-body-sm-lh: 1.5;
+
+  /* Label / caption — Plex Sans 11–12/500 uppercase tracked */
+  --type-label-size: 11px;
+  --type-label-lh: 1.3;
+  --type-label-weight: 500;
+  --type-label-tracking: 0.07em;
+
+  /* Score readout — Plex Mono 28–32/400 tabular */
+  --type-readout-size: 30px;
+  --type-readout-lh: 1.0;
+  --type-readout-weight: 400;
+
+  /* Inline data — Plex Mono 12–14/400 tabular */
+  --type-data-size: 13px;
+  --type-data-lh: 1.4;
+}
+
+/* Convenience text roles — apply directly */
+.r-page-title {
+  font-family: var(--font-display);
+  font-size: var(--type-page-size);
+  line-height: var(--type-page-lh);
+  font-weight: var(--type-page-weight);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.r-section-title {
+  font-family: var(--font-display);
+  font-size: var(--type-section-size);
+  line-height: var(--type-section-lh);
+  font-weight: var(--type-section-weight);
+  color: var(--text-primary);
+}
+.r-card-title {
+  font-family: var(--font-display);
+  font-size: var(--type-card-size);
+  line-height: var(--type-card-lh);
+  font-weight: var(--type-card-weight);
+  color: var(--text-primary);
+}
+.r-body {
+  font-family: var(--font-ui);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  font-weight: var(--type-body-weight);
+  color: var(--text-secondary);
+}
+.r-label {
+  font-family: var(--font-ui);
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-lh);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.r-readout {
+  font-family: var(--font-data);
+  font-size: var(--type-readout-size);
+  line-height: var(--type-readout-lh);
+  font-weight: var(--type-readout-weight);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  color: var(--text-primary);
+}
+.r-data {
+  font-family: var(--font-data);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  color: var(--text-secondary);
+}

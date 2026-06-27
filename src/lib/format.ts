@@ -1,4 +1,5 @@
-import type { AssessmentPoint, Exercise, Patient, PatientStatus, Severity } from "../types";
+import type { AssessmentPoint, Exercise, MeasureKey, Patient, PatientStatus, Severity } from "../types";
+import { PATHWAYS } from "../data/protocols";
 
 export function latest(p: Patient): AssessmentPoint {
   return p.history[p.history.length - 1];
@@ -91,4 +92,70 @@ function clamp(n: number, min: number, max: number): number {
 export function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function fullDate(iso: string): string {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+// Join a list into a readable clause: "A", "A and B", or "A, B, and C".
+function listToProse(items: string[]): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
+// Build a clinical progress note from the patient's live data rather than a
+// fixed template: demographics, the most recent standardized scores and their
+// change since the prior assessment, the FMA-UE severity band, home program
+// adherence, and the intervention language for each pathway the patient is
+// actively working in. Two patients never produce the same note, which is what
+// makes the copy-to-EMR feature genuine documentation generation.
+export function generateProgressNote(p: Patient): string {
+  const last = latest(p);
+  const prev = previous(p);
+  const severity = severityOf(p);
+  const adherence = avgAdherence(p);
+  const side = p.affectedSide.toLowerCase();
+
+  const deltaPhrase = (key: MeasureKey): string => {
+    if (!prev) return "";
+    const d = last[key] - prev[key];
+    if (d > 0) return ` (up ${d} since ${formatDate(prev.date)})`;
+    if (d < 0) return ` (down ${Math.abs(d)} since ${formatDate(prev.date)})`;
+    return ` (no change since ${formatDate(prev.date)})`;
+  };
+
+  const scores =
+    `FMA-UE ${last.fmaUE}/66${deltaPhrase("fmaUE")}, ` +
+    `ARAT ${last.arat}/57${deltaPhrase("arat")}, ` +
+    `Box and Blocks ${last.bbt} blocks/min${deltaPhrase("bbt")}`;
+
+  const adherencePhrase =
+    adherence < 60
+      ? `Home program adherence is ${adherence}% over the past 30 days, below the 60% threshold and flagged for follow-up.`
+      : `Home program adherence is ${adherence}% over the past 30 days, within the target range.`;
+
+  const pathways = PATHWAYS.filter((pw) => p.pathwayIds.includes(pw.id));
+  const pathwayNames =
+    pathways.length > 0 ? listToProse(pathways.map((pw) => pw.name)) : "the assigned severity baseline";
+  const interventions = pathways.map((pw) => pw.documentation).join(" ");
+
+  const status = statusOf(p);
+  const plan =
+    status === "attention"
+      ? "Plan: address the items above, reinforce home program adherence, and reassess at the next visit."
+      : status === "maintaining"
+        ? "Plan: maintain the current program to hold gains and reassess at the next visit."
+        : "Plan: continue the current program and grade task demand upward as tolerance improves.";
+
+  const intro =
+    `${fullDate(last.date)}. ${p.name}, ${p.age} yo, status post ${p.strokeType.toLowerCase()} CVA affecting the ` +
+    `${side} upper extremity, currently ${p.phase.toLowerCase()} phase at week ${p.weeksSinceOnset}. ` +
+    `Most recent standardized outcomes: ${scores}. ` +
+    `Patient is in the ${severity.toLowerCase()} impairment band and active in ${pathwayNames}.`;
+
+  return [intro, interventions, adherencePhrase, plan].filter(Boolean).join(" ");
 }

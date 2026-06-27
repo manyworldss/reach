@@ -514,6 +514,23 @@ export default function Icon({
             <path d="M9 12l2 2 4-4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </>
         );
+      case "phone":
+        return (
+          <>
+            <rect
+              x="6"
+              y="2"
+              width="12"
+              height="20"
+              rx="3"
+              fill={fillVal}
+              fillOpacity={fillOpacity}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path d="M11 18h2" strokeLinecap="round" strokeLinejoin="round" />
+          </>
+        );
       default:
         return null;
     }

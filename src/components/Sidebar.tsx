@@ -6,6 +6,7 @@ const NAV = [
   { id: "outcomes", icon: "assess", label: "Outcomes" },
   { id: "programs", icon: "dumbbell", label: "Programs" },
   { id: "education", icon: "book", label: "Education" },
+  { id: "patientapp", icon: "phone", label: "Patient app" },
 ];
 
 interface SidebarProps {
@@ -35,13 +36,21 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
 
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-line bg-surface px-4 py-6 md:flex sticky top-0 h-screen overflow-y-auto">
-      {/* Brand logo & header */}
-      <div className="flex items-center gap-2.5 px-2">
-        <span style={{ width: 34, height: 34, borderRadius: 10, background: "var(--accent-soft)", color: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Icon name="trajectory" duotone size={18} />
-        </span>
+      {/* Brand mark, shared with the home page. Click returns to the home page. */}
+      <button
+        onClick={() => onViewChange("landing")}
+        className="group flex items-center gap-2.5 rounded-lg px-2 py-1 -mx-0 text-left transition-colors hover:bg-surface2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        aria-label="Reach home"
+      >
+        <img
+          src={isDark ? "/assets/reach-mark-on-dark.svg" : "/assets/reach-mark.svg"}
+          alt="Reach"
+          width={32}
+          height={32}
+          className="block"
+        />
         <span className="font-display text-xl font-bold tracking-tight text-ink">Reach!</span>
-      </div>
+      </button>
 
       {/* Navigation menu */}
       <nav className="mt-8 space-y-1">
@@ -66,8 +75,8 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
           onClick={() => onViewChange("landing")}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] text-muted hover:bg-surface2 hover:text-ink"
         >
-          <Icon name="compass" size={18} />
-          Marketing Site
+          <Icon name="home" size={18} />
+          Home
         </button>
       </nav>
 
