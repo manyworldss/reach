@@ -1,0 +1,10 @@
+{
+  "cleanUrls": false,
+  "redirects": [
+    { "source": "/patient-app", "destination": "/patient-app/index.html", "type": 302 },
+    { "source": "/patient-app/", "destination": "/patient-app/index.html", "type": 302 }
+  ],
+  "rewrites": [
+    { "source": "**", "destination": "/index.html" }
+  ]
+}
