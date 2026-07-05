@@ -74,7 +74,7 @@ export default function PatientAppDemo({ onBack }: { onBack?: () => void }) {
               style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(20,32,27,0.28), transparent 75%)", filter: "blur(7px)" }}
             />
             <iframe
-              src="/patient-app/index.html"
+              src="patient-app/index.html"
               title="Reach patient app, interactive prototype"
               className="relative z-10 h-[720px] w-[348px] border-0 bg-transparent"
               loading="lazy"

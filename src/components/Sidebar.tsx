@@ -43,7 +43,7 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
         aria-label="Reach home"
       >
         <img
-          src={isDark ? "/assets/reach-mark-on-dark.svg" : "/assets/reach-mark.svg"}
+          src={isDark ? "assets/reach-mark-on-dark.svg" : "assets/reach-mark.svg"}
           alt="Reach"
           width={32}
           height={32}

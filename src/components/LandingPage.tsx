@@ -136,7 +136,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       <header className={`topstrip ${isShrunk ? "shrink" : ""}`} id="topstrip">
         <nav className="navpill">
           <a className="brand" href="#top">
-            <img src="/assets/reach-mark-on-dark.svg" alt="Logo" />
+            <img src="assets/reach-mark-on-dark.svg" alt="Logo" />
             Reach
           </a>
           <div className="nav-links">
@@ -529,7 +529,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
               <div className="pa-phone-wrap">
                 <iframe
                   className="pa-embed"
-                  src="/patient-app/index.html"
+                  src="patient-app/index.html"
                   title="Reach patient app, interactive prototype"
                   loading="lazy"
                 />
@@ -817,7 +817,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
       <footer>
         <div className="wrap">
           <a className="brand" href="#top" style={{ fontSize: "20px" }}>
-            <img src="/assets/reach-mark.svg" alt="Logo" style={{ width: "22px", height: "22px" }} /> Reach
+            <img src="assets/reach-mark.svg" alt="Logo" style={{ width: "22px", height: "22px" }} /> Reach
           </a>
           <nav className="f-links">
             <a href="#how">How it works</a>
