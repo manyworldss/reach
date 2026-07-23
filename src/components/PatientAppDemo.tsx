@@ -76,7 +76,8 @@ export default function PatientAppDemo({ onBack }: { onBack?: () => void }) {
             <iframe
               src="patient-app/index.html"
               title="Reach patient app, interactive prototype"
-              className="relative z-10 h-[720px] w-[348px] border-0 bg-transparent"
+              className="relative z-10 h-[720px] w-[348px] border-0 bg-transparent rounded-[46px] overflow-hidden"
+              style={{ colorScheme: 'normal' }}
               loading="lazy"
             />
           </div>

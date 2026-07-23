@@ -1096,22 +1096,9 @@
   justify-content: center;
   align-items: center;
   padding: 28px 24px;
-  border-radius: 30px;
-  background:
-    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.1), transparent 72%),
-    var(--paper);
-  border: 1px solid var(--ink-warm);
-  box-shadow: 0 30px 64px -36px rgba(20, 32, 27, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), background 0.45s var(--ease);
 }
 
-.reach-landing .pa-phone-wrap:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 38px 72px -36px rgba(20, 32, 27, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  background:
-    radial-gradient(72% 48% at 50% 24%, rgba(12, 125, 114, 0.14), transparent 72%),
-    #ffffff;
-}
+
 
 /* Soft contact shadow so the phone is seated on the pedestal, not floating */
 .reach-landing .pa-phone-wrap::after {
@@ -1136,6 +1123,8 @@
   width: 340px;
   height: 720px;
   border: 0;
+  border-radius: 46px;
+  overflow: hidden;
   background: transparent;
   /* color-scheme:normal keeps the iframe backdrop transparent. With
      color-scheme:light the browser paints an opaque light canvas behind the
