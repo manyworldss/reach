@@ -27,19 +27,9 @@ const chartData = [
 ];
 
 export default function LandingPage({ onLaunchApp }: LandingPageProps) {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [isShrunk, setIsShrunk] = useState(false);
 
   const chartRef = useRef<HTMLDivElement>(null);
-
-  // Waitlist submission handler
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setSubmitted(true);
-    }
-  };
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -132,6 +122,10 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
 
   return (
     <div className="reach-landing">
+      <p className="proto-note" role="note">
+        Research prototype &middot; synthetic patients &middot; not for clinical use
+      </p>
+
       {/* ============ FLOATING PILL NAV ============ */}
       <header className={`topstrip ${isShrunk ? "shrink" : ""}`} id="topstrip">
         <nav className="navpill">
@@ -784,32 +778,19 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
         <div className="cta-inner">
           <div className="rv rv-slide-up">
             <h2>
-              Be first to help them <em className="tealword">reach</em> further.
+              Take a look <em className="tealword">around</em>.
             </h2>
-            <p>For clinics and survivors. Tell us where to send your early invite.</p>
+            <p>
+              Reach is a research prototype built during a UX for Healthcare certificate course, shaped by
+              feedback from three occupational therapists. It isn't a medical product and won't be released
+              for clinical use. Every patient in it is made up.
+            </p>
           </div>
-          {!submitted ? (
-            <form className="waitlist rv rv-slide-up rv-d1" id="waitform" onSubmit={handleWaitlistSubmit}>
-              <input
-                type="email"
-                placeholder="you@clinic.org"
-                aria-label="Email address"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button className="btn btn-teal" type="submit">
-                Join the waitlist <span className="arr">&rarr;</span>
-              </button>
-            </form>
-          ) : (
-            <div className="sentmsg" id="sentmsg" style={{ display: "inline-flex" }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12.5l4.5 4.5L19 7" />
-              </svg>
-              You're on the list. We'll be in touch.
-            </div>
-          )}
+          <div className="rv rv-slide-up rv-d1" style={{ marginTop: "30px" }}>
+            <button className="btn btn-teal" onClick={onLaunchApp}>
+              Open the clinician view <span className="arr">&rarr;</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -826,7 +807,7 @@ export default function LandingPage({ onLaunchApp }: LandingPageProps) {
             <a href="#app">Patient app</a>
             <a href="#trust">Privacy</a>
           </nav>
-          <span className="f-note">&copy; 2026 Reach &middot; synthetic data, no PHI</span>
+          <span className="f-note">&copy; 2026 Reach &middot; research prototype &middot; synthetic data, no PHI</span>
         </div>
       </footer>
     </div>

@@ -1722,3 +1722,15 @@
     display: none;
   }
 }
+
+/* ============ prototype notice ============ */
+.reach-landing .proto-note {
+  margin: 0;
+  padding: 9px 16px;
+  background: var(--ink-warm);
+  color: var(--paper);
+  font-family: var(--font-data);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}

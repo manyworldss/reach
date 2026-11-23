@@ -2,6 +2,8 @@
 
 Live Demo - https://reach-health.up.railway.app/
 
+> **Status: research prototype.** I built Reach during a UX for Healthcare certificate course on Maven. It isn't a medical product, it isn't meant for clinical use, and it won't be released as one. Every patient in the app is synthetic.
+
 A caseload and outcome tracking platform for rehabilitation therapists tracking upper extremity motor recovery after stroke. The system organizes a patient's measured outcomes, expected recovery arc, and home program adherence in one unified interface. This enables a clinician to identify in seconds who needs attention first and whether a patient is progressing on track.
 
 Reach! is designed with a clinical, human-factors-first focus. The platform addresses the broader daily occupations of stroke survivors: dressing, writing, eating, typing, and other daily activities. This is a deliberate shift from a strict focus on return to work to better serve patients across outpatient, home health, and telehealth spaces, including retired stroke survivors.
@@ -37,6 +39,10 @@ Occupational Therapist 3 focused on administrative workflow and family support:
 *   **Flow Expectation**: Addressed clinical typing flow during a session versus post-session documentation.
 *   **Documentation Status Tracker**: Proposed tracking whether session documentation is in-progress or completed.
 *   **Caregiver Portal**: Suggested a simplified view or update loop for family and caregivers to coordinate support at home.
+
+## Why Reach Stays a Prototype
+
+I'm not a clinician. Reach started as a course project and became a way to learn how occupational therapists actually work, and the three OTs who gave feedback made it far better than it would have been otherwise. Putting a tool like this in front of real patients would need clinical oversight and regulatory review that a course project doesn't have. So I've kept it as a prototype, and the live demo runs only on made-up patients.
 
 ## Human Factors and UX Implementation
 

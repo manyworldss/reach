@@ -62,6 +62,12 @@ function MainAppContent() {
         }}
       />
       <main className="flex-1 overflow-x-hidden min-h-[100dvh]">
+        <p
+          role="note"
+          className="border-b border-line bg-surface2 px-4 py-2 text-center text-xs font-medium text-muted"
+        >
+          Research prototype with synthetic patients. Not for clinical use.
+        </p>
         {renderContent()}
       </main>
     </div>
